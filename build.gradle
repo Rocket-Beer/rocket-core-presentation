@@ -1,0 +1,41 @@
+buildscript {
+    ext {
+        gradle_version = "7.0.0"
+        kotlin_version = "1.5.21"
+        kotlinx_version = "1.5.0"
+        nav_version = "2.3.5"
+    }
+    repositories {
+        google()
+        mavenCentral()
+
+        maven {url 'https://developer.huawei.com/repo/'}
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:$gradle_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
+        classpath 'com.huawei.agconnect:agcp:1.4.2.300'
+    }
+}
+
+allprojects {
+    apply from: "$rootDir/config/publish/common_methods.gradle"
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            url = "https://maven.pkg.github.com/Rocket-Beer/rocket-core-domain"
+            credentials {
+                username = getPublisherUsername(rootProject)
+                password = getPublisherPassword(rootProject)
+            }
+        }
+        maven {url 'https://developer.huawei.com/repo/'}
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
