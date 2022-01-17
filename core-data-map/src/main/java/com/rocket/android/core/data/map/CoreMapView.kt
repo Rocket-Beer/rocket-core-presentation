@@ -6,6 +6,7 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import androidx.annotation.RawRes
 import androidx.annotation.RequiresPermission
@@ -19,6 +20,7 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.huawei.hms.api.HuaweiApiAvailability
 import com.huawei.hms.maps.HuaweiMap
 import com.huawei.hms.maps.HuaweiMapOptions
+import com.rocket.android.core.data.map.extensions.isHmsCoreVersionAvailable
 import com.rocket.android.core.data.map.model.*
 import java.lang.Exception
 import com.google.android.gms.common.ConnectionResult as ConnectionResultGMS
@@ -48,7 +50,7 @@ class CoreMapView @JvmOverloads constructor(
         when {
             HuaweiApiAvailability.getInstance()
                 .isHuaweiMobileServicesAvailable(context) == ConnectionResultHMS.SUCCESS -> {
-                if (isHmsCoreVersionAvailable()) {
+                if (isHmsCoreVersionAvailable(context = context)) {
                     hmsMapView = findViewById(R.id.hms_map_view) ?: View.inflate(
                         context,
                         R.layout.core_map_hms,
@@ -78,17 +80,6 @@ class CoreMapView @JvmOverloads constructor(
                     this@CoreMapView
                 ).findViewById(R.id.gms_map_view)
             }
-        }
-    }
-
-    private fun isHmsCoreVersionAvailable(): Boolean{
-        return try {
-            val pm: PackageManager = context.packageManager
-            val packageInfo: PackageInfo = pm.getPackageInfo("com.huawei.hwid", 0)
-            val version : Long = PackageInfoCompat.getLongVersionCode(packageInfo)
-            version >= 50000301L
-        } catch (e: Exception) {
-            false
         }
     }
 

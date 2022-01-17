@@ -1,19 +1,23 @@
 package com.rocket.android.core.data.map.extensions
 
 import android.content.Context
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
+import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.annotation.StyleRes
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.ContextCompat
+import androidx.core.content.pm.PackageInfoCompat
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
-import com.rocket.android.core.data.map.model.BitmapDescriptor
-import com.rocket.android.core.data.map.model.toBitmapDescription
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.huawei.hms.api.HuaweiApiAvailability
+import com.rocket.android.core.data.map.model.BitmapDescriptor
+import com.rocket.android.core.data.map.model.toBitmapDescription
 import java.net.URL
 import com.google.android.gms.maps.model.BitmapDescriptor as BitmapDescriptorGMS
 import com.google.android.gms.maps.model.BitmapDescriptorFactory as BitmapDescriptorFactoryGMS
@@ -117,24 +121,31 @@ fun bitmapDescriptorFromVector(
     @StyleRes themeResId: Int
 ): BitmapDescriptor? {
     when {
+        HuaweiApiAvailability.getInstance()
+            .isHuaweiMobileServicesAvailable(context) == com.huawei.hms.api.ConnectionResult.SUCCESS -> {
+            return if (isHmsCoreVersionAvailable(context = context)) {
+                bitmapDescriptorFromVectorHMS(
+                    context = context,
+                    vectorResId = vectorResId,
+                    themeResId = themeResId
+                )?.toBitmapDescription()
+            } else {
+                bitmapDescriptorFromVectorGMS(
+                    context = context,
+                    vectorResId = vectorResId,
+                    themeResId = themeResId
+                )?.toBitmapDescription()
+            }
+        }
         GoogleApiAvailability.getInstance()
             .isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS -> {
-
             return bitmapDescriptorFromVectorGMS(
                 context = context,
                 vectorResId = vectorResId,
                 themeResId = themeResId
             )?.toBitmapDescription()
         }
-        HuaweiApiAvailability.getInstance()
-            .isHuaweiMobileServicesAvailable(context) == com.huawei.hms.api.ConnectionResult.SUCCESS -> {
 
-            return bitmapDescriptorFromVectorHMS(
-                context = context,
-                vectorResId = vectorResId,
-                themeResId = themeResId
-            )?.toBitmapDescription()
-        }
         else -> {
             return bitmapDescriptorFromVectorGMS(
                 context = context,
@@ -145,7 +156,12 @@ fun bitmapDescriptorFromVector(
     }
 }
 
-fun bitmapDescriptorFromUrl(context: Context, iconUrl: String, width: Int = -1, height: Int = -1): BitmapDescriptor? =
+fun bitmapDescriptorFromUrl(
+    context: Context,
+    iconUrl: String,
+    width: Int = -1,
+    height: Int = -1
+): BitmapDescriptor? =
     try {
         val url = URL(iconUrl)
         var bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream())
@@ -155,14 +171,17 @@ fun bitmapDescriptorFromUrl(context: Context, iconUrl: String, width: Int = -1, 
         }
 
         when {
+            HuaweiApiAvailability.getInstance()
+                .isHuaweiMobileServicesAvailable(context) == com.huawei.hms.api.ConnectionResult.SUCCESS -> {
+                if (isHmsCoreVersionAvailable(context = context)) {
+                    BitmapDescriptorFactoryHMS.fromBitmap(bitmap).toBitmapDescription()
+                } else {
+                    BitmapDescriptorFactoryGMS.fromBitmap(bitmap).toBitmapDescription()
+                }
+            }
             GoogleApiAvailability.getInstance()
                 .isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS -> {
                 BitmapDescriptorFactoryGMS.fromBitmap(bitmap).toBitmapDescription()
-            }
-
-            HuaweiApiAvailability.getInstance()
-                .isHuaweiMobileServicesAvailable(context) == com.huawei.hms.api.ConnectionResult.SUCCESS -> {
-                BitmapDescriptorFactoryHMS.fromBitmap(bitmap).toBitmapDescription()
             }
 
             else -> {
@@ -172,3 +191,14 @@ fun bitmapDescriptorFromUrl(context: Context, iconUrl: String, width: Int = -1, 
     } catch (_: Throwable) {
         null
     }
+
+fun isHmsCoreVersionAvailable(context: Context): Boolean {
+    return try {
+        val pm: PackageManager = context.packageManager
+        val packageInfo: PackageInfo = pm.getPackageInfo("com.huawei.hwid", 0)
+        val version: Long = PackageInfoCompat.getLongVersionCode(packageInfo)
+        version >= 50000301L
+    } catch (e: Exception) {
+        false
+    }
+}
