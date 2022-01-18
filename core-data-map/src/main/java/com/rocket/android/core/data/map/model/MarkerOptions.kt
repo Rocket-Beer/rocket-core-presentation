@@ -3,12 +3,13 @@ package com.rocket.android.core.data.map.model
 import android.content.Context
 import androidx.annotation.DrawableRes
 import androidx.annotation.StyleRes
-import com.rocket.android.core.data.map.extensions.bitmapDescriptorFromUrl
-import com.rocket.android.core.data.map.extensions.bitmapDescriptorFromVectorGMS
-import com.rocket.android.core.data.map.extensions.bitmapDescriptorFromVectorHMS
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.huawei.hms.api.HuaweiApiAvailability
+import com.rocket.android.core.data.map.extensions.bitmapDescriptorFromUrl
+import com.rocket.android.core.data.map.extensions.bitmapDescriptorFromVectorGMS
+import com.rocket.android.core.data.map.extensions.bitmapDescriptorFromVectorHMS
+import com.rocket.android.core.data.map.extensions.isHmsCoreVersionAvailable
 import com.google.android.gms.maps.model.MarkerOptions as MarkerOptionsGMS
 import com.huawei.hms.maps.model.MarkerOptions as MarkerOptionsHMS
 
@@ -25,15 +26,18 @@ class MarkerOptions(
 
     init {
         when {
+            HuaweiApiAvailability.getInstance()
+                .isHuaweiMobileServicesAvailable(context) == com.huawei.hms.api.ConnectionResult.SUCCESS -> {
+                if (isHmsCoreVersionAvailable(context = context)) {
+                    hmsMarkerOptions = MarkerOptionsHMS()
+                } else {
+                    gmsMarkerOptions = MarkerOptionsGMS()
+                }
+            }
             GoogleApiAvailability.getInstance()
                 .isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS -> {
 
                 gmsMarkerOptions = MarkerOptionsGMS()
-            }
-            HuaweiApiAvailability.getInstance()
-                .isHuaweiMobileServicesAvailable(context) == com.huawei.hms.api.ConnectionResult.SUCCESS -> {
-
-                hmsMarkerOptions = MarkerOptionsHMS()
             }
             else -> {
                 gmsMarkerOptions = MarkerOptionsGMS()
@@ -69,7 +73,12 @@ class MarkerOptions(
     }
 
     fun setIcon(url: String, width: Int = -1, height: Int = -1) {
-        bitmapDescriptorFromUrl(context = context, iconUrl = url, width = width, height = height)?.let {
+        bitmapDescriptorFromUrl(
+            context = context,
+            iconUrl = url,
+            width = width,
+            height = height
+        )?.let {
             setIcon(bitmapDescriptor = it)
         }
     }
