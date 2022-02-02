@@ -46,7 +46,6 @@ private fun FragmentActivity.safeState(action: (activity: FragmentActivity) -> U
                 override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
 
                 override fun onActivityDestroyed(activity: Activity) {}
-
             }
         )
     }

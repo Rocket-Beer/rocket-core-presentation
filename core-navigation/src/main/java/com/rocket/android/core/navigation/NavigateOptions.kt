@@ -5,14 +5,17 @@ import androidx.navigation.NavOptions
 import androidx.navigation.navOptions
 import com.rocket.android.core.navigation.entities.NavAnimation
 
+class NavigateOptions(
+    clear: Boolean? = null,
+    @IdRes to: Int = 0,
+    popUpToInclusive: Boolean = false,
+    animation: NavAnimation? = null
+) {
 
-class NavigateOptions(clear: Boolean? = null,
-                      @IdRes to: Int = 0,
-                      popUpToInclusive: Boolean = false,
-                      animation: NavAnimation? = null){
-
-    private constructor(builder: Builder) : this(builder.clear, builder.to, builder.popUpToInclusive,
-        builder.animation)
+    private constructor(builder: Builder) : this(
+        builder.clear, builder.to, builder.popUpToInclusive,
+        builder.animation
+    )
 
     companion object {
         inline fun build(block: Builder.() -> Unit) = Builder().apply(block).build()
@@ -24,8 +27,7 @@ class NavigateOptions(clear: Boolean? = null,
         var popUpToInclusive: Boolean = false
         var animation: NavAnimation? = null
 
-
-        fun build(): NavOptions{
+        fun build(): NavOptions {
             return navOptions {
                 if (clear == true) {
                     popUpTo(
