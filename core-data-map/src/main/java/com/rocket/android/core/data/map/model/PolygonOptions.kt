@@ -61,7 +61,6 @@ class PolygonOptions(
     fun getHoles(): List<List<LatLng>>? {
         return gmsPolygonOptions?.holes?.map { hole -> hole.map { it.toLatLng() } }
             ?: hmsPolygonOptions?.holes?.map { hole -> hole.map { it.toLatLng() } }
-
     }
 
     fun getPoints(): List<LatLng>? {

@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
-import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.annotation.StyleRes
 import androidx.appcompat.view.ContextThemeWrapper
@@ -112,7 +111,6 @@ fun bitmapDescriptorFromVectorHMS(
             BitmapDescriptorFactoryHMS.fromBitmap(bitmap)
         }
     }
-
 }
 
 fun bitmapDescriptorFromVector(

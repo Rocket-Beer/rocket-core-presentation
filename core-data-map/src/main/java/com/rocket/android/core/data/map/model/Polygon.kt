@@ -1,7 +1,7 @@
 package com.rocket.android.core.data.map.model
 
-import com.huawei.hms.maps.model.Polygon as HmsPolygon
 import com.google.android.gms.maps.model.Polygon as GmsPolygon
+import com.huawei.hms.maps.model.Polygon as HmsPolygon
 
 class Polygon {
     var gmsPolygon: GmsPolygon? = null

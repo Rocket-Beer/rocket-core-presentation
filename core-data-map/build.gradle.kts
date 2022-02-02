@@ -60,5 +60,5 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
     androidTestImplementation("org.mockito:mockito-android:3.5.13")
-    androidTestImplementation("io.mockk:mockk-android:1.10.2")
+//    androidTestImplementation("io.mockk:mockk-android:1.10.2")
 }
