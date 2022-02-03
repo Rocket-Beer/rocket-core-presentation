@@ -10,8 +10,6 @@ allprojects {
                 val userName = publish.CommonMethods.getPublisherUserName(rootProject)
                 val userPass = publish.CommonMethods.getPublisherPassword(rootProject)
 
-                println("user = $userName :: password = $userPass")
-
                 username = userName
                 password = userPass
             }

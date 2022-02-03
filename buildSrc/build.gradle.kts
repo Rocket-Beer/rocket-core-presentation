@@ -35,8 +35,6 @@ repositories {
                 token = System.getenv("GITHUB_TOKEN")
             }
 
-            println("username = $userName :: token = $token")
-
             username = userName ?: ""
             password = token ?: ""
         }
