@@ -90,7 +90,23 @@ fun goToFragment(){
 }
 ~~~
 
+## Core data Map user manual
+Core data Map package ease to use Google maps and Petal maps (Huawei, soported until version "com.huawei.hms:maps:5.3.0.300").
+
+### Implement Rocket core-data-map package
+~~~
+implementation "com.rocket.android.core:core-data-map:0.0.1-alpha02"
+~~~
+
+### CoreMapView
+CoreMapView is a custom view component which can config some maps data:
+* Markers
+* Zoom
+* Polygons
+* Location
+* Style
+
 ## Packages
-core-viewmodel --> 0.0.1-alpha 
-core-navigation --> 0.0.1-alpha 
-core-data-map --> 0.0.1-alpha02
+core-viewmodel --> 0.0.1-alpha  
+core-navigation --> 0.0.1-alpha  
+core-data-map --> 0.0.1-alpha02  
