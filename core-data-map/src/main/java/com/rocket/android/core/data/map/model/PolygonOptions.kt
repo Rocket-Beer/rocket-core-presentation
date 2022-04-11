@@ -4,6 +4,7 @@ import android.content.Context
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.huawei.hms.api.HuaweiApiAvailability
+import com.rocket.android.core.data.map.extensions.isHmsCoreVersionAvailable
 import com.google.android.gms.maps.model.PolygonOptions as GmsPolygonOptions
 import com.huawei.hms.maps.model.PolygonOptions as HmsPolygonOptions
 
@@ -11,23 +12,26 @@ class PolygonOptions(
     context: Context
 ) {
     var gmsPolygonOptions: GmsPolygonOptions? = null
-
         private set
     var hmsPolygonOptions: HmsPolygonOptions? = null
         private set
 
     init {
         when {
+            HuaweiApiAvailability.getInstance()
+                .isHuaweiMobileServicesAvailable(context) == com.huawei.hms.api.ConnectionResult.SUCCESS -> {
+                if (isHmsCoreVersionAvailable(context = context)) {
+                    hmsPolygonOptions = HmsPolygonOptions()
+                } else {
+                    gmsPolygonOptions = GmsPolygonOptions()
+                }
+            }
             GoogleApiAvailability.getInstance()
                 .isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS -> {
 
                 gmsPolygonOptions = GmsPolygonOptions()
             }
-            HuaweiApiAvailability.getInstance()
-                .isHuaweiMobileServicesAvailable(context) == com.huawei.hms.api.ConnectionResult.SUCCESS -> {
 
-                hmsPolygonOptions = HmsPolygonOptions()
-            }
             else -> {
                 gmsPolygonOptions = GmsPolygonOptions()
             }
@@ -57,7 +61,6 @@ class PolygonOptions(
     fun getHoles(): List<List<LatLng>>? {
         return gmsPolygonOptions?.holes?.map { hole -> hole.map { it.toLatLng() } }
             ?: hmsPolygonOptions?.holes?.map { hole -> hole.map { it.toLatLng() } }
-
     }
 
     fun getPoints(): List<LatLng>? {

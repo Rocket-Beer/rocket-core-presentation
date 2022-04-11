@@ -1,8 +1,7 @@
 package com.rocket.android.core.data.map.model
 
-import com.huawei.hms.maps.model.BitmapDescriptor as HmsBitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptor as GmsBitmapDescriptior
-
+import com.huawei.hms.maps.model.BitmapDescriptor as HmsBitmapDescriptor
 
 class BitmapDescriptor(
     val gmsBitmapDescriptor: GmsBitmapDescriptior? = null,

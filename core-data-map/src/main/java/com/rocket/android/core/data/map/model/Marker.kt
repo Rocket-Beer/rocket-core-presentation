@@ -102,4 +102,3 @@ class Marker {
 fun MarkerGMS.toMarker() = Marker().also { it.gmsMarker = this }
 
 fun MarkerHMS.toMarker() = Marker().also { it.hmsMarker = this }
-
