@@ -1,5 +1,0 @@
-include ':core-viewmodel'
-include ':core-navigation'
-include ':core-data-map'
-rootProject.name = "Android Architecture Core Presentation"
-include ':sample-app'

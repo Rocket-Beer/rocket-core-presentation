@@ -2,15 +2,12 @@ package com.rocket.android.core.data.map
 
 import android.Manifest
 import android.content.Context
-import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.RawRes
 import androidx.annotation.RequiresPermission
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.pm.PackageInfoCompat
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -19,8 +16,15 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.huawei.hms.api.HuaweiApiAvailability
 import com.huawei.hms.maps.HuaweiMap
 import com.huawei.hms.maps.HuaweiMapOptions
-import com.rocket.android.core.data.map.model.*
-import java.lang.Exception
+import com.rocket.android.core.data.map.extensions.isHmsCoreVersionAvailable
+import com.rocket.android.core.data.map.model.LatLng
+import com.rocket.android.core.data.map.model.Marker
+import com.rocket.android.core.data.map.model.MarkerOptions
+import com.rocket.android.core.data.map.model.Polygon
+import com.rocket.android.core.data.map.model.PolygonOptions
+import com.rocket.android.core.data.map.model.toLatLng
+import com.rocket.android.core.data.map.model.toMarker
+import com.rocket.android.core.data.map.model.toPolygon
 import com.google.android.gms.common.ConnectionResult as ConnectionResultGMS
 import com.google.android.gms.maps.MapView as GmsMapView
 import com.google.android.gms.maps.model.MapStyleOptions as GmsMapStyleOptions
@@ -48,7 +52,7 @@ class CoreMapView @JvmOverloads constructor(
         when {
             HuaweiApiAvailability.getInstance()
                 .isHuaweiMobileServicesAvailable(context) == ConnectionResultHMS.SUCCESS -> {
-                if (isHmsCoreVersionAvailable()) {
+                if (isHmsCoreVersionAvailable(context = context)) {
                     hmsMapView = findViewById(R.id.hms_map_view) ?: View.inflate(
                         context,
                         R.layout.core_map_hms,
@@ -78,17 +82,6 @@ class CoreMapView @JvmOverloads constructor(
                     this@CoreMapView
                 ).findViewById(R.id.gms_map_view)
             }
-        }
-    }
-
-    private fun isHmsCoreVersionAvailable(): Boolean{
-        return try {
-            val pm: PackageManager = context.packageManager
-            val packageInfo: PackageInfo = pm.getPackageInfo("com.huawei.hwid", 0)
-            val version : Long = PackageInfoCompat.getLongVersionCode(packageInfo)
-            version >= 50000301L
-        } catch (e: Exception) {
-            false
         }
     }
 

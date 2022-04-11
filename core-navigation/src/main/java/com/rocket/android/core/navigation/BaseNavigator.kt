@@ -10,8 +10,9 @@ import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavDirections
 import androidx.navigation.NavOptions
 import androidx.navigation.navOptions
-import com.rocket.android.core.navigation.extension.*
 import com.rocket.android.core.navigation.extension.dismiss
+import com.rocket.android.core.navigation.extension.navigate
+import com.rocket.android.core.navigation.extension.navigateFragment
 import com.rocket.android.core.navigation.extension.popBackStack
 import com.rocket.android.core.navigation.extension.popBackStackFragment
 import com.rocket.android.core.navigation.extension.show
