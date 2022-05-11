@@ -15,6 +15,7 @@ import com.rocket.android.core.navigation.extension.navigate
 import com.rocket.android.core.navigation.extension.navigateFragment
 import com.rocket.android.core.navigation.extension.popBackStack
 import com.rocket.android.core.navigation.extension.popBackStackFragment
+import com.rocket.android.core.navigation.extension.popBackStackTo
 import com.rocket.android.core.navigation.extension.show
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -72,6 +73,12 @@ sealed class BaseNavigator(private val navigatorLifecycle: NavigatorLifecycle) {
     fun goBack() {
         checkMainThread {
             fragment?.popBackStack()
+        }
+    }
+
+    fun goBack(@IdRes id: Int, inclusive: Boolean = true) {
+        checkMainThread {
+            fragment?.popBackStackTo(id, inclusive)
         }
     }
 
