@@ -142,7 +142,11 @@ internal fun Fragment.popBack(@IdRes id: Int? = null, inclusive: Boolean? = null
 
 internal fun Fragment.navigateBack(@IdRes id: Int? = null, inclusive: Boolean?): Boolean {
     return id?.let {
-        this.findNavController().popBackStack(id, inclusive ?: false)
+        if (isFragmentInBackStack(id)) {
+            this.findNavController().popBackStack(id, inclusive ?: false)
+        } else {
+            true
+        }
     } ?: run {
         this.findNavController().popBackStack()
     }
