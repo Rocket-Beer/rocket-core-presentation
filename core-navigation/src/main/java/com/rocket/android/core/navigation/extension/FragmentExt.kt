@@ -10,9 +10,26 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 
 // region FRAGMENT
+fun Fragment?.isFragmentInBackStack(destinationId: Int): Boolean {
+    return this?.findNavController()?.let { navController ->
+        try {
+            navController.getBackStackEntry(destinationId)
+            true
+        } catch (e: Exception) {
+            false
+        }
+    } ?: false
+}
+
 internal fun Fragment.popBackStack() {
     safeState { fragment ->
         fragment.popBack()
+    }
+}
+
+internal fun Fragment.popBackStackTo(@IdRes id: Int, inclusive: Boolean) {
+    safeState { fragment ->
+        fragment.popBack(id, inclusive)
     }
 }
 
@@ -113,13 +130,25 @@ internal fun Fragment.safeState(ignore: Boolean = false, action: (fragment: Frag
 }
 
 @PublishedApi
-internal fun Fragment.popBack() {
+internal fun Fragment.popBack(@IdRes id: Int? = null, inclusive: Boolean? = null) {
     var fragment: Fragment? = this
-    while (fragment != null && !fragment.findNavController().popBackStack()) {
+    while (fragment != null && !fragment.navigateBack(id, inclusive)) {
         fragment = fragment.parentFragment
     }
     if (fragment == null) {
         activity?.finish()
+    }
+}
+
+internal fun Fragment.navigateBack(@IdRes id: Int? = null, inclusive: Boolean?): Boolean {
+    return id?.let {
+        if (isFragmentInBackStack(id)) {
+            this.findNavController().popBackStack(id, inclusive ?: false)
+        } else {
+            true
+        }
+    } ?: run {
+        this.findNavController().popBackStack()
     }
 }
 // endregion
