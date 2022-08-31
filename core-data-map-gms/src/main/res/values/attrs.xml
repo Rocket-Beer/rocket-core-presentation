@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CoreMap">
+        <attr name="animateDuration" format="integer"/>
+        <attr name="zoom" format="float"/>
+        <attr name="latitude" format="float"/>
+        <attr name="longitude" format="float"/>
+    </declare-styleable>
+</resources>
