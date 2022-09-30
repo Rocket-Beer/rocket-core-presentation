@@ -8,6 +8,11 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 
 // region DIALOG
+/**
+ * Shows a [dialog] with a tag
+ * @param dialog the [DialogFragment] that will be shown
+ * @param tag the tag for [dialog]
+ */
 internal fun FragmentActivity.show(dialog: DialogFragment, tag: String) {
     safeState { activity ->
         dialog.show(activity.supportFragmentManager, tag)
