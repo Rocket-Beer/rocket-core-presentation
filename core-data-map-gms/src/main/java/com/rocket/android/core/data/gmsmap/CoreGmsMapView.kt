@@ -12,14 +12,11 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.GoogleMapOptions
 import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.CircleOptions
 import com.rocket.android.core.data.gmsmap.extensions.toLatLng
 import com.rocket.android.core.data.gmsmap.extensions.toMarker
 import com.rocket.android.core.data.gmsmap.extensions.toPolygon
-import com.rocket.android.core.data.gmsmap.model.LatLng
-import com.rocket.android.core.data.gmsmap.model.Marker
-import com.rocket.android.core.data.gmsmap.model.MarkerOptions
-import com.rocket.android.core.data.gmsmap.model.Polygon
-import com.rocket.android.core.data.gmsmap.model.PolygonOptions
+import com.rocket.android.core.data.gmsmap.model.*
 import com.google.android.gms.maps.MapView as GmsMapView
 import com.google.android.gms.maps.model.MapStyleOptions as GmsMapStyleOptions
 import com.google.android.gms.maps.model.Marker as GmsMarker
@@ -250,5 +247,16 @@ class CoreGmsMapView @JvmOverloads constructor(
                 null
             )
         }
+    }
+
+    fun drawCircle(customCircleOptions: CustomCircleOptions) {
+        val circleOptions = CircleOptions()
+            .center(customCircleOptions.center)
+            .radius(customCircleOptions.radius)
+            .strokeColor(customCircleOptions.strokeColor)
+            .strokeWidth(customCircleOptions.strokeWidth)
+            .fillColor(customCircleOptions.fillColor)
+
+        gmsMap?.addCircle(circleOptions)
     }
 }
