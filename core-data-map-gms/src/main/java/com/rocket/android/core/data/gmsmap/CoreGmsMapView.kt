@@ -251,11 +251,13 @@ class CoreGmsMapView @JvmOverloads constructor(
 
     fun drawCircle(customCircleOptions: CustomCircleOptions) {
         val circleOptions = CircleOptions()
-            .center(customCircleOptions.center)
+            .center(customCircleOptions.center.gmsLatLng)
             .radius(customCircleOptions.radius)
             .strokeColor(customCircleOptions.strokeColor)
             .strokeWidth(customCircleOptions.strokeWidth)
             .fillColor(customCircleOptions.fillColor)
+            .zIndex(customCircleOptions.zIndex)
+            .visible(customCircleOptions.visible)
 
         gmsMap?.addCircle(circleOptions)
     }
