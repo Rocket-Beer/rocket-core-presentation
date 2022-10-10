@@ -3,7 +3,7 @@ package com.rocket.android.core.navigation.di
 import com.rocket.android.core.navigation.NavigatorLifecycle
 
 /**
- * Contains an instance of [NavigatorLifecycle]
+ * Contains an instance of *NavigatorLifecycle*
  *
  * Provides a singleton instance of [NavigatorLifecycle], which manages app's lifecycle
  *
