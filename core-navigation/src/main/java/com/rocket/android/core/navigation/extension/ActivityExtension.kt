@@ -33,7 +33,7 @@ internal fun FragmentActivity.dismiss(tag: String) {
 // region UTILS
 /**
  * Performs the given action when the activity calls its parent's [Activity.onResume]. If the activity is already
- * resumed, the action will be executed instantly
+ * resumed, the action will be executed immediately
  * @param action action to be performed
  */
 private fun FragmentActivity.safeState(action: (activity: FragmentActivity) -> Unit) {

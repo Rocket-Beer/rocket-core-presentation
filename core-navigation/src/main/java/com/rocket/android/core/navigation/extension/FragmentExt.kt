@@ -1,15 +1,20 @@
 package com.rocket.android.core.navigation.extension
 
+import android.app.Activity
 import android.net.Uri
 import android.os.Bundle
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 
 // region FRAGMENT
+/**
+ * Calls fragment's [safeState] with its [popBack] method as an action
+ */
 internal fun Fragment.popBackStack() {
     safeState { fragment ->
         fragment.popBack()
@@ -94,6 +99,12 @@ internal inline fun <reified Type : Fragment> Fragment.getNavHostFragment(): Fra
     return fragment?.childFragmentManager?.primaryNavigationFragment
 }
 
+/**
+ * Performs the given action after the fragment has returned from the [Fragment.onResume] call. If the fragment is
+ * already resumed, the action will be executed immediately
+ * @param ignore If true, the action will be performed only if the fragment is resumed
+ * @param action action to be performed
+ */
 @PublishedApi
 internal fun Fragment.safeState(ignore: Boolean = false, action: (fragment: Fragment) -> Unit) {
     if (isResumed) {
@@ -112,6 +123,12 @@ internal fun Fragment.safeState(ignore: Boolean = false, action: (fragment: Frag
     }
 }
 
+/**
+ * If fragment exists, calls [NavController.popBackStack] on its [NavController], otherwise it will try to call
+ * [NavController.popBackStack] on the first parent fragment that exists.
+ *
+ * If no fragment has been found, [Activity.finish] will be called
+ */
 @PublishedApi
 internal fun Fragment.popBack() {
     var fragment: Fragment? = this
