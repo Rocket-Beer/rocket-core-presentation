@@ -17,6 +17,7 @@ import com.rocket.android.core.data.gmsmap.extensions.toLatLng
 import com.rocket.android.core.data.gmsmap.extensions.toMarker
 import com.rocket.android.core.data.gmsmap.extensions.toPolygon
 import com.rocket.android.core.data.gmsmap.model.*
+import com.rocket.android.core.data.gmsmap.model.Marker
 import com.google.android.gms.maps.MapView as GmsMapView
 import com.google.android.gms.maps.model.MapStyleOptions as GmsMapStyleOptions
 import com.google.android.gms.maps.model.Marker as GmsMarker
@@ -71,10 +72,10 @@ class CoreGmsMapView @JvmOverloads constructor(
         gmsMapView?.onSaveInstanceState(bundle)
     }
 
-    fun getMapAsync(mapReady: () -> Unit) {
+    fun getMapAsync(mapReady: (GoogleMap) -> Unit) {
         gmsMapView?.getMapAsync { map ->
             gmsMap = map
-            mapReady()
+            mapReady(map)
         }
     }
 

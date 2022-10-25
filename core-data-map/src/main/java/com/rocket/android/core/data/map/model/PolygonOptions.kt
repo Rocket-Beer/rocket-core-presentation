@@ -5,8 +5,8 @@ import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.huawei.hms.api.HuaweiApiAvailability
 import com.rocket.android.core.data.map.extensions.isHmsCoreVersionAvailable
-import com.google.android.gms.maps.model.PolygonOptions as GmsPolygonOptions
 import com.huawei.hms.maps.model.PolygonOptions as HmsPolygonOptions
+import com.rocket.android.core.data.gmsmap.model.PolygonOptions as GmsPolygonOptions
 
 class PolygonOptions(
     context: Context
@@ -23,49 +23,55 @@ class PolygonOptions(
                 if (isHmsCoreVersionAvailable(context = context)) {
                     hmsPolygonOptions = HmsPolygonOptions()
                 } else {
-                    gmsPolygonOptions = GmsPolygonOptions()
+                    gmsPolygonOptions = GmsPolygonOptions(context = context)
                 }
             }
             GoogleApiAvailability.getInstance()
                 .isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS -> {
 
-                gmsPolygonOptions = GmsPolygonOptions()
+                gmsPolygonOptions = GmsPolygonOptions(context = context)
             }
 
             else -> {
-                gmsPolygonOptions = GmsPolygonOptions()
+                gmsPolygonOptions = GmsPolygonOptions(context = context)
             }
         }
     }
 
     fun add(input: List<LatLng>) {
-        gmsPolygonOptions?.addAll(input.map { it.gmsLatLng })
+        gmsPolygonOptions?.add(input.map { it.toLatLngGMS() })
         hmsPolygonOptions?.addAll(input.map { it.hmsLatLng })
     }
 
     fun add(point: LatLng) {
-        gmsPolygonOptions?.add(point.gmsLatLng)
+        gmsPolygonOptions?.add(point.toLatLngGMS())
         hmsPolygonOptions?.add(point.hmsLatLng)
     }
 
     fun addHole(input: List<LatLng>) {
-        gmsPolygonOptions?.addHole(input.map { it.gmsLatLng })
+        gmsPolygonOptions?.addHole(input.map { it.toLatLngGMS() })
         hmsPolygonOptions?.addHole(input.map { it.hmsLatLng })
     }
 
     fun clearHoles() {
-        gmsPolygonOptions?.holes?.clear()
+        gmsPolygonOptions?.clearHoles()
         hmsPolygonOptions?.holes?.clear()
     }
 
     fun getHoles(): List<List<LatLng>>? {
-        return gmsPolygonOptions?.holes?.map { hole -> hole.map { it.toLatLng() } }
-            ?: hmsPolygonOptions?.holes?.map { hole -> hole.map { it.toLatLng() } }
+        return if (gmsPolygonOptions != null) {
+            gmsPolygonOptions?.getHoles()?.map { hole -> hole.map { it.toLatLng() } }
+        } else {
+            hmsPolygonOptions?.holes?.map { hole -> hole.map { it.toLatLng() } }
+        }
     }
 
     fun getPoints(): List<LatLng>? {
-        return gmsPolygonOptions?.points?.map { it.toLatLng() }
-            ?: hmsPolygonOptions?.points?.map { it.toLatLng() }
+        return if (gmsPolygonOptions != null) {
+            return gmsPolygonOptions?.getPoints()?.map { points -> points.toLatLng() }
+        } else {
+            hmsPolygonOptions?.points?.map { it.toLatLng() }
+        }
     }
 
     fun strokeWidth(stroke: Float) {

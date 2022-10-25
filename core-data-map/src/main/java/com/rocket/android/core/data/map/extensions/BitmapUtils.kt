@@ -15,8 +15,10 @@ import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.huawei.hms.api.HuaweiApiAvailability
+import com.rocket.android.core.data.gmsmap.model.toBitmapDescription
 import com.rocket.android.core.data.map.model.BitmapDescriptor
-import com.rocket.android.core.data.map.model.toBitmapDescription
+import com.rocket.android.core.data.map.model.toGMSBitmapDescription
+import com.rocket.android.core.data.map.model.toHMSBitmapDescription
 import java.net.URL
 import com.google.android.gms.maps.model.BitmapDescriptor as BitmapDescriptorGMS
 import com.google.android.gms.maps.model.BitmapDescriptorFactory as BitmapDescriptorFactoryGMS
@@ -126,13 +128,13 @@ fun bitmapDescriptorFromVector(
                     context = context,
                     vectorResId = vectorResId,
                     themeResId = themeResId
-                )?.toBitmapDescription()
+                )?.toHMSBitmapDescription()
             } else {
                 bitmapDescriptorFromVectorGMS(
                     context = context,
                     vectorResId = vectorResId,
                     themeResId = themeResId
-                )?.toBitmapDescription()
+                )?.toBitmapDescription()?.toGMSBitmapDescription()
             }
         }
         GoogleApiAvailability.getInstance()
@@ -141,7 +143,7 @@ fun bitmapDescriptorFromVector(
                 context = context,
                 vectorResId = vectorResId,
                 themeResId = themeResId
-            )?.toBitmapDescription()
+            )?.toBitmapDescription()?.toGMSBitmapDescription()
         }
 
         else -> {
@@ -149,7 +151,7 @@ fun bitmapDescriptorFromVector(
                 context = context,
                 vectorResId = vectorResId,
                 themeResId = themeResId
-            )?.toBitmapDescription()
+            )?.toBitmapDescription()?.toGMSBitmapDescription()
         }
     }
 }
@@ -172,18 +174,21 @@ fun bitmapDescriptorFromUrl(
             HuaweiApiAvailability.getInstance()
                 .isHuaweiMobileServicesAvailable(context) == com.huawei.hms.api.ConnectionResult.SUCCESS -> {
                 if (isHmsCoreVersionAvailable(context = context)) {
-                    BitmapDescriptorFactoryHMS.fromBitmap(bitmap).toBitmapDescription()
+                    BitmapDescriptorFactoryHMS.fromBitmap(bitmap).toHMSBitmapDescription()
                 } else {
                     BitmapDescriptorFactoryGMS.fromBitmap(bitmap).toBitmapDescription()
+                        .toGMSBitmapDescription()
                 }
             }
             GoogleApiAvailability.getInstance()
                 .isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS -> {
                 BitmapDescriptorFactoryGMS.fromBitmap(bitmap).toBitmapDescription()
+                    .toGMSBitmapDescription()
             }
 
             else -> {
                 BitmapDescriptorFactoryGMS.fromBitmap(bitmap).toBitmapDescription()
+                    .toGMSBitmapDescription()
             }
         }
     } catch (_: Throwable) {

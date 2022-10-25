@@ -3,11 +3,12 @@ package com.rocket.android.core.data.map.model
 import android.content.Context
 import androidx.annotation.DrawableRes
 import androidx.annotation.StyleRes
-import com.rocket.android.core.data.map.extensions.bitmapDescriptorFromUrl
-import com.rocket.android.core.data.map.extensions.bitmapDescriptorFromVectorGMS
+import com.rocket.android.core.data.gmsmap.extensions.bitmapDescriptorFromUrl
+import com.rocket.android.core.data.gmsmap.extensions.bitmapDescriptorFromVectorGMS
+import com.rocket.android.core.data.gmsmap.model.toBitmapDescription
 import com.rocket.android.core.data.map.extensions.bitmapDescriptorFromVectorHMS
-import com.google.android.gms.maps.model.Marker as MarkerGMS
 import com.huawei.hms.maps.model.Marker as MarkerHMS
+import com.rocket.android.core.data.gmsmap.model.Marker as MarkerGMS
 
 class Marker {
     var gmsMarker: MarkerGMS? = null
@@ -15,33 +16,33 @@ class Marker {
 
     fun getTag(): Any? {
         return try {
-            gmsMarker?.tag ?: hmsMarker?.tag
+            gmsMarker?.getTag() ?: hmsMarker?.tag
         } catch (_: Throwable) {
             null
         }
     }
 
     fun setTag(tag: String) {
-        gmsMarker?.tag = tag
+        gmsMarker?.setTag(tag = tag)
         hmsMarker?.tag = tag
     }
 
     fun isVisible(): Boolean? {
         return try {
-            gmsMarker?.isVisible ?: hmsMarker?.isVisible
+            gmsMarker?.isVisible() ?: hmsMarker?.isVisible
         } catch (_: Throwable) {
             null
         }
     }
 
     fun setVisible(visible: Boolean) {
-        gmsMarker?.isVisible = visible
+        gmsMarker?.setVisible(visible = visible)
         hmsMarker?.isVisible = visible
     }
 
     fun getPosition(): LatLng? {
         return try {
-            gmsMarker?.position?.toLatLng() ?: hmsMarker?.position?.toLatLng()
+            gmsMarker?.getPosition()?.toLatLng() ?: hmsMarker?.position?.toLatLng()
         } catch (_: Throwable) {
             null
         }
@@ -53,7 +54,7 @@ class Marker {
                 context = context,
                 vectorResId = icon,
                 themeResId = theme
-            )
+            )!!.toBitmapDescription()
         )
 
         hmsMarker?.setIcon(
@@ -66,7 +67,7 @@ class Marker {
     }
 
     fun setIcon(bitmapDescriptor: BitmapDescriptor) {
-        gmsMarker?.setIcon(bitmapDescriptor.gmsBitmapDescriptor)
+        gmsMarker?.setIcon(bitmapDescriptor.gmsBitmapDescriptor!!)
         hmsMarker?.setIcon(bitmapDescriptor.hmsBitmapDescriptor)
     }
 
@@ -77,7 +78,7 @@ class Marker {
             width = width,
             height = height
         )?.let {
-            setIcon(bitmapDescriptor = it)
+            setIcon(bitmapDescriptor = BitmapDescriptor(it))
         }
     }
 
@@ -88,14 +89,14 @@ class Marker {
 
     fun getTitle(): String? {
         return try {
-            gmsMarker?.title ?: hmsMarker?.title
+            gmsMarker?.getTitle() ?: hmsMarker?.title
         } catch (_: Throwable) {
             null
         }
     }
 
     fun getSnippet(): String? {
-        return gmsMarker?.snippet ?: hmsMarker?.snippet
+        return gmsMarker?.getSnippet() ?: hmsMarker?.snippet
     }
 }
 

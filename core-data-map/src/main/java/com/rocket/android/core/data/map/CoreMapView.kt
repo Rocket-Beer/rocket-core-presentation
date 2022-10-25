@@ -9,23 +9,15 @@ import androidx.annotation.RawRes
 import androidx.annotation.RequiresPermission
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.gms.common.GoogleApiAvailability
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.GoogleMapOptions
-import com.google.android.gms.maps.model.CameraPosition
 import com.huawei.hms.api.HuaweiApiAvailability
 import com.huawei.hms.maps.HuaweiMap
 import com.huawei.hms.maps.HuaweiMapOptions
+import com.rocket.android.core.data.gmsmap.CoreGmsMapView
 import com.rocket.android.core.data.map.extensions.isHmsCoreVersionAvailable
 import com.rocket.android.core.data.map.model.*
 import com.google.android.gms.common.ConnectionResult as ConnectionResultGMS
-import com.google.android.gms.maps.MapView as GmsMapView
-import com.google.android.gms.maps.model.CircleOptions as CircleOptionsGMS
-import com.google.android.gms.maps.model.MapStyleOptions as GmsMapStyleOptions
-import com.google.android.gms.maps.model.Marker as GmsMarker
 import com.huawei.hms.api.ConnectionResult as ConnectionResultHMS
 import com.huawei.hms.maps.MapView as HmsMapView
-import com.huawei.hms.maps.model.CircleOptions as CircleOptionsHMS
 import com.huawei.hms.maps.model.MapStyleOptions as HmsMapStyleOptions
 import com.huawei.hms.maps.model.Marker as HmsMarker
 
@@ -35,10 +27,7 @@ class CoreMapView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attributeSet, defStyleAttr) {
 
-    private var gmsMapView: GmsMapView? = null
-    private var gmsMap: GoogleMap? = null
-    private var gmsMarkersList = mutableListOf<GmsMarker>()
-
+    private var gmsMapView: CoreGmsMapView? = null
     private var hmsMapView: HmsMapView? = null
     private var hmsMap: HuaweiMap? = null
     private var hmsMarkersList = mutableListOf<HmsMarker>()
@@ -122,7 +111,7 @@ class CoreMapView @JvmOverloads constructor(
 
     fun getMapAsync(mapReady: () -> Unit) {
         gmsMapView?.getMapAsync { map ->
-            gmsMap = map
+            map
             mapReady()
         }
 
@@ -133,41 +122,37 @@ class CoreMapView @JvmOverloads constructor(
     }
 
     fun setStyle(@RawRes style: Int) {
-        gmsMap?.setMapStyle(GmsMapStyleOptions.loadRawResourceStyle(context, style))
+        gmsMapView?.setStyle(style)
         hmsMap?.setMapStyle(HmsMapStyleOptions.loadRawResourceStyle(context, style))
     }
 
     fun mapToolbarEnabled(enabled: Boolean) {
-        gmsMap?.uiSettings?.isMapToolbarEnabled = enabled
+        gmsMapView?.mapToolbarEnabled(enabled = enabled)
         hmsMap?.uiSettings?.isMapToolbarEnabled = enabled
     }
 
     fun allGesturesEnabled(enabled: Boolean) {
-        gmsMap?.uiSettings?.setAllGesturesEnabled(enabled)
+        gmsMapView?.allGesturesEnabled(enabled = enabled)
         hmsMap?.uiSettings?.setAllGesturesEnabled(enabled)
     }
 
     fun myLocationButtonEnabled(enabled: Boolean) {
-        gmsMap?.uiSettings?.isMyLocationButtonEnabled = enabled
+        gmsMapView?.myLocationButtonEnabled(enabled = enabled)
         hmsMap?.uiSettings?.isMyLocationButtonEnabled = enabled
     }
 
     fun compassEnabled(enabled: Boolean) {
-        gmsMap?.uiSettings?.isCompassEnabled = enabled
+        gmsMapView?.compassEnabled(enabled = enabled)
         hmsMap?.uiSettings?.isCompassEnabled = enabled
     }
 
     fun zoomControlsEnabled(enabled: Boolean) {
-        gmsMap?.uiSettings?.isZoomControlsEnabled = enabled
+        gmsMapView?.zoomControlsEnabled(enabled = enabled)
         hmsMap?.uiSettings?.isZoomControlsEnabled = enabled
     }
 
     fun clear() {
-        gmsMap?.let { map ->
-            gmsMarkersList.clear()
-            map.clear()
-        }
-
+        gmsMapView?.clear()
         hmsMap?.let { map ->
             hmsMarkersList.clear()
             map.clear()
@@ -176,21 +161,22 @@ class CoreMapView @JvmOverloads constructor(
 
     @RequiresPermission(anyOf = [Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION])
     fun myLocationEnabled(enabled: Boolean) {
-        gmsMap?.isMyLocationEnabled = enabled
+        gmsMapView?.myLocationEnabled(enabled = enabled)
         hmsMap?.isMyLocationEnabled = enabled
     }
 
     fun isMyLocationEnabled(): Boolean? {
-        return gmsMap?.isMyLocationEnabled ?: hmsMap?.isMyLocationEnabled
+        return gmsMapView?.isMyLocationEnabled()
+            ?: hmsMap?.isMyLocationEnabled
     }
 
     fun liteMode(enabled: Boolean) {
-        gmsMap?.mapType = GoogleMapOptions().liteMode(enabled).mapType
+        gmsMapView?.liteMode(enabled = enabled)
         hmsMap?.mapType = HuaweiMapOptions().liteMode(enabled).mapType
     }
 
     fun setOnMapClickListener(onClick: () -> Unit) {
-        gmsMap?.setOnMapClickListener {
+        gmsMapView?.setOnMapClickListener {
             onClick()
         }
 
@@ -200,11 +186,8 @@ class CoreMapView @JvmOverloads constructor(
     }
 
     fun addMarker(markerOptions: MarkerOptions): Marker? {
-        if (gmsMap != null) {
-            return gmsMap?.addMarker(markerOptions.gmsMarkerOptions)?.also { marker ->
-                markerOptions.id = marker.id
-                gmsMarkersList.add(marker)
-            }?.toMarker()
+        if (gmsMapView != null) {
+            gmsMapView?.addMarker(markerOptions = markerOptions.gmsMarkerOptions!!)
         }
 
         if (hmsMap != null) {
@@ -219,10 +202,7 @@ class CoreMapView @JvmOverloads constructor(
 
     fun setMarkers(markers: List<MarkerOptions>) {
         markers.forEach { markerOption ->
-            gmsMap?.addMarker(markerOption.gmsMarkerOptions)?.also { marker ->
-                markerOption.id = marker.id
-                gmsMarkersList.add(marker)
-            }
+            gmsMapView?.setMarkers(markers = markers.map { marker -> marker.gmsMarkerOptions!! })
 
             hmsMap?.addMarker(markerOption.hmsMarkerOptions)?.also { marker ->
                 markerOption.id = marker.id
@@ -233,12 +213,8 @@ class CoreMapView @JvmOverloads constructor(
 
     fun showMarkersI(list: List<MarkerOptions>) {
         list.forEach { markerOptions ->
-            if (gmsMap != null) {
-                gmsMarkersList.filter { marker ->
-                    markerOptions.id == marker.id
-                }.forEach { marker ->
-                    marker.isVisible = true
-                }
+            if (gmsMapView != null) {
+                gmsMapView?.showMarkersI(list = list.map { markerOption -> markerOption.gmsMarkerOptions!! })
             } else if (hmsMap != null) {
                 hmsMarkersList.filter { marker ->
                     markerOptions.id == marker.id
@@ -251,12 +227,8 @@ class CoreMapView @JvmOverloads constructor(
 
     fun hideMarkersI(list: List<MarkerOptions>) {
         list.forEach { markerOptions ->
-            if (gmsMap != null) {
-                gmsMarkersList.filter { marker ->
-                    markerOptions.id == marker.id
-                }.forEach { marker ->
-                    marker.isVisible = false
-                }
+            if (gmsMapView != null) {
+                gmsMapView?.hideMarkersI(list = list.map { markerOption -> markerOption.gmsMarkerOptions!! })
             } else if (hmsMap != null) {
                 hmsMarkersList.filter { marker ->
                     markerOptions.id == marker.id
@@ -269,14 +241,8 @@ class CoreMapView @JvmOverloads constructor(
 
     fun clearMarkersI(list: List<MarkerOptions>) {
         list.forEach { markerOptions ->
-            if (gmsMap != null) {
-                val filteredMarkerList = gmsMarkersList.filter { marker ->
-                    markerOptions.id == marker.id
-                }
-                filteredMarkerList.forEach { marker ->
-                    marker.remove()
-                }
-                gmsMarkersList.removeAll(filteredMarkerList)
+            if (gmsMapView != null) {
+                gmsMapView?.clearMarkersI(list = list.map { markerOption -> markerOption.gmsMarkerOptions!! })
             } else if (hmsMap != null) {
                 val filteredMarkerList = hmsMarkersList.filter { marker ->
                     markerOptions.id == marker.id
@@ -290,9 +256,8 @@ class CoreMapView @JvmOverloads constructor(
     }
 
     fun onMarkerClickListener(clickListener: ((Marker) -> Unit)) {
-        gmsMap?.setOnMarkerClickListener { marker ->
-            clickListener(marker.toMarker())
-            true
+        gmsMapView?.onMarkerClickListener {
+            clickListener.invoke(it.toMarker())
         }
 
         hmsMap?.setOnMarkerClickListener { marker ->
@@ -306,19 +271,11 @@ class CoreMapView @JvmOverloads constructor(
         dragListener: ((Marker) -> Unit),
         dragEndListener: ((Marker) -> Unit)
     ) {
-        gmsMap?.setOnMarkerDragListener(object : GoogleMap.OnMarkerDragListener {
-            override fun onMarkerDragStart(marker: GmsMarker) {
-                dragStartListener(marker.toMarker())
-            }
-
-            override fun onMarkerDrag(marker: GmsMarker) {
-                dragListener(marker.toMarker())
-            }
-
-            override fun onMarkerDragEnd(marker: GmsMarker) {
-                dragEndListener(marker.toMarker())
-            }
-        })
+        gmsMapView?.onMarkerDragListener(
+            dragStartListener = { dragStartListener.invoke(it.toMarker()) },
+            dragListener = { dragListener.invoke(it.toMarker()) },
+            dragEndListener = { dragEndListener.invoke(it.toMarker()) }
+        )
 
         hmsMap?.setOnMarkerDragListener(object : HuaweiMap.OnMarkerDragListener {
             override fun onMarkerDragStart(marker: HmsMarker) {
@@ -336,8 +293,8 @@ class CoreMapView @JvmOverloads constructor(
     }
 
     fun addPolygon(polygon: PolygonOptions): Polygon? {
-        if (gmsMap != null) {
-            return gmsMap?.addPolygon(polygon.gmsPolygonOptions)?.toPolygon()
+        if (gmsMapView != null) {
+            gmsMapView?.addPolygon(polygon = polygon.gmsPolygonOptions!!)
         }
 
         if (hmsMap != null) {
@@ -348,9 +305,7 @@ class CoreMapView @JvmOverloads constructor(
     }
 
     fun onCameraIdle(onIdleListener: () -> Unit) {
-        gmsMap?.setOnCameraIdleListener {
-            onIdleListener()
-        }
+        gmsMapView?.onCameraIdle(onIdleListener = onIdleListener)
 
         hmsMap?.setOnCameraIdleListener {
             onIdleListener()
@@ -358,26 +313,21 @@ class CoreMapView @JvmOverloads constructor(
     }
 
     fun getCameraZoom(): Float? {
-        return gmsMap?.cameraPosition?.zoom ?: hmsMap?.cameraPosition?.zoom
+        return gmsMapView?.getCameraZoom()
+            ?: hmsMap?.cameraPosition?.zoom
     }
 
     fun getCameraTarget(): LatLng? {
-        return gmsMap?.cameraPosition?.target?.toLatLng()
+        return gmsMapView?.getCameraTarget()?.toLatLng()
             ?: hmsMap?.cameraPosition?.target?.toLatLng()
     }
 
     fun setCameraPosition(position: LatLng, zoom: Float, animateDuration: Int) {
-        gmsMap?.let { map ->
-            val gmsCameraPosition = CameraPosition.builder()
-            gmsCameraPosition.target(position.gmsLatLng)
-            gmsCameraPosition.zoom(zoom)
-
-            map.animateCamera(
-                CameraUpdateFactory.newCameraPosition(gmsCameraPosition.build()),
-                animateDuration,
-                null
-            )
-        }
+        gmsMapView?.setCameraPosition(
+            position = position.toLatLngGMS(),
+            zoom = zoom,
+            animateDuration = animateDuration
+        )
 
         hmsMap?.let { map ->
             val hmsCameraPosition = com.huawei.hms.maps.model.CameraPosition.builder()
@@ -394,29 +344,8 @@ class CoreMapView @JvmOverloads constructor(
 
     fun drawCircle(customCircleOptions: CustomCircleOptions) {
 
-        gmsMap?.let { map ->
-            val circleOptions = CircleOptionsGMS()
-                .center(customCircleOptions.center.gmsLatLng)
-                .radius(customCircleOptions.radius)
-                .strokeColor(customCircleOptions.strokeColor)
-                .strokeWidth(customCircleOptions.strokeWidth)
-                .fillColor(customCircleOptions.fillColor)
-                .zIndex(customCircleOptions.zIndex)
-                .visible(customCircleOptions.visible)
+        gmsMapView?.drawCircle(customCircleOptions.toCustomCircleOptionsGMS())
 
-            map.addCircle(circleOptions)
-        }
-
-        hmsMap?.let { map ->
-            val circleOptions = CircleOptionsHMS()
-                .center(customCircleOptions.center.hmsLatLng)
-                .radius(customCircleOptions.radius)
-                .strokeColor(customCircleOptions.strokeColor)
-                .strokeWidth(customCircleOptions.strokeWidth)
-                .fillColor(customCircleOptions.fillColor)
-                .zIndex(customCircleOptions.zIndex)
-                .visible(customCircleOptions.visible)
-            map.addCircle(circleOptions)
-        }
+        hmsMap?.addCircle(customCircleOptions.circleOptionsHMS)
     }
 }

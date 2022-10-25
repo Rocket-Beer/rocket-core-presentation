@@ -53,6 +53,7 @@ dependencies {
 
     implementation("com.google.android.gms:play-services-maps:17.0.1")
     implementation("com.huawei.hms:maps:5.3.0.300")
+    implementation("com.rocket.android.core:core-data-map-gms:0.0.1-alpha04")
 
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.mockito:mockito-core:3.8.0")
