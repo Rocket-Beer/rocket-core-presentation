@@ -14,7 +14,17 @@ import com.huawei.hms.maps.HuaweiMap
 import com.huawei.hms.maps.HuaweiMapOptions
 import com.rocket.android.core.data.gmsmap.CoreGmsMapView
 import com.rocket.android.core.data.map.extensions.isHmsCoreVersionAvailable
-import com.rocket.android.core.data.map.model.*
+import com.rocket.android.core.data.map.model.CustomCircleOptions
+import com.rocket.android.core.data.map.model.LatLng
+import com.rocket.android.core.data.map.model.Marker
+import com.rocket.android.core.data.map.model.MarkerOptions
+import com.rocket.android.core.data.map.model.Polygon
+import com.rocket.android.core.data.map.model.PolygonOptions
+import com.rocket.android.core.data.map.model.toCustomCircleOptionsGMS
+import com.rocket.android.core.data.map.model.toLatLng
+import com.rocket.android.core.data.map.model.toLatLngGMS
+import com.rocket.android.core.data.map.model.toMarker
+import com.rocket.android.core.data.map.model.toPolygon
 import com.google.android.gms.common.ConnectionResult as ConnectionResultGMS
 import com.huawei.hms.api.ConnectionResult as ConnectionResultHMS
 import com.huawei.hms.maps.MapView as HmsMapView
