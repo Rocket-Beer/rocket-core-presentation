@@ -21,6 +21,9 @@ internal fun Fragment.popBackStack() {
     }
 }
 
+/**
+ * Calls [safeState] with [popBack] method as an action on the fragment's [getNavHostFragment]
+ */
 @PublishedApi
 internal inline fun <reified Type : Fragment> Fragment.popBackStackFragment() {
     getNavHostFragment<Type>()?.safeState { fragment ->
@@ -89,6 +92,10 @@ internal inline fun <reified Type : Fragment> Fragment.navigateFragment(
 // endregion
 
 // region UTILS
+/**
+ * Starting from the bottom, returns the first [FragmentManager.getPrimaryNavigationFragment] found of type [Type] in
+ * the back stack, if it exists. Otherwise returns null
+ */
 @PublishedApi
 internal inline fun <reified Type : Fragment> Fragment.getNavHostFragment(): Fragment? {
     var fragment: Fragment? = this
