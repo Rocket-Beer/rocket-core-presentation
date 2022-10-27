@@ -27,6 +27,12 @@ fun <T : Any, L : LiveData<T>> View.observe(liveData: L, lifecycleOwner: Lifecyc
     observeViewLifecycleOwner(liveData, block, lifecycleOwner)
 }
 
+/**
+ * Calls [LiveData.removeObservers] and [LiveData.observe] methods successively on [liveData]
+ * @param liveData [LiveData] used to perform the methods
+ * @param block type parameter for the *observer* parameter of the [LiveData.observe] method
+ * @param lifecycleOwner *owner* parameter of the [LiveData.removeObservers] and [LiveData.observe] methods
+ */
 private fun <T : Any?, L : LiveData<T>> observeViewLifecycleOwner(
     liveData: L,
     block: (T) -> Unit,
