@@ -13,7 +13,7 @@ import androidx.navigation.fragment.findNavController
 
 // region FRAGMENT
 /**
- * Calls fragment's [safeState] with its [popBack] method as an action
+ * Calls [safeState] using as an action fragment's [popBack] method
  */
 internal fun Fragment.popBackStack() {
     safeState { fragment ->
@@ -33,11 +33,11 @@ internal inline fun <reified Type : Fragment> Fragment.popBackStackFragment() {
 }
 
 /**
- * Calls [safeState] with the three-argument overload of [NavController.navigate] method as an action on the fragment's
- * [NavController]
- * @param id "resId" parameter of the three-argument overload of [NavController.navigate] method
- * @param navOptions "navOptions" parameter of the three-argument overload of [NavController.navigate] method
- * @param extras "args" parameter of the three-argument overload of [NavController.navigate] method
+ * Calls [safeState] using as an action the three-argument overload (using id) of [NavController.navigate] method on the
+ * fragment's [NavController]
+ * @param id *resId* parameter of the three-argument overload (using id) of [NavController.navigate] method
+ * @param navOptions *navOptions* parameter of the three-argument overload (using id) of [NavController.navigate] method
+ * @param extras *args* parameter of the three-argument overload (using id) of [NavController.navigate] method
  */
 internal fun Fragment.navigate(
     @IdRes id: Int,
@@ -52,9 +52,9 @@ internal fun Fragment.navigate(
 /**
  * Performs [navigate] on the fragment's [getNavHostFragment] of type [Type]
  * @param Type the type of the [FragmentManager.getPrimaryNavigationFragment] to be found
- * @param id "resId" parameter of the three-argument overload of [NavController.navigate] method
- * @param navOptions "navOptions" parameter of the three-argument overload of [NavController.navigate] method
- * @param extras "args" parameter of the three-argument overload of [NavController.navigate] method
+ * @param id *resId* parameter of the three-argument overload (using id) of [NavController.navigate] method
+ * @param navOptions *navOptions* parameter of the three-argument (using id) overload of [NavController.navigate] method
+ * @param extras *args* parameter of the three-argument overload (using id) of [NavController.navigate] method
  */
 @PublishedApi
 internal inline fun <reified Type : Fragment> Fragment.navigateFragment(
@@ -67,6 +67,14 @@ internal inline fun <reified Type : Fragment> Fragment.navigateFragment(
     }
 }
 
+/**
+ * Calls [safeState] using as an action the two-argument overload (using [NavDirections]) of [NavController.navigate]
+ * method on the fragment's [NavController]
+ * @param directions *directions* parameter of the two-argument overload (using [NavDirections]) of
+ * [NavController.navigate] method
+ * @param navOptions *navOptions* parameter of the two-argument overload (using [NavDirections]) of
+ * [NavController.navigate] method
+ */
 internal fun Fragment.navigate(
     directions: NavDirections,
     navOptions: NavOptions? = null
@@ -76,6 +84,15 @@ internal fun Fragment.navigate(
     }
 }
 
+/**
+ * Performs the two-argument overload (using [NavDirections]) of [navigate] method on the fragment's
+ * [getNavHostFragment] of type [Type]
+ * @param Type the type of the [FragmentManager.getPrimaryNavigationFragment] to be found
+ * @param directions *directions* parameter of the two-argument overload (using [NavDirections]) of
+ * [NavController.navigate] method
+ * @param navOptions *navOptions* parameter of the two-argument overload (using [NavDirections]) of
+ * [NavController.navigate] method
+ */
 @PublishedApi
 internal inline fun <reified Type : Fragment> Fragment.navigateFragment(
     directions: NavDirections,
@@ -86,6 +103,13 @@ internal inline fun <reified Type : Fragment> Fragment.navigateFragment(
     }
 }
 
+/**
+ * Calls [safeState] using as an action the two-argument overload (using [Uri]) of [NavController.navigate] method on
+ * the fragment's [NavController]
+ * @param uri *deepLink* parameter of the two-argument overload (using [Uri]) of [NavController.navigate] method
+ * @param navOptions *navOptions* parameter of the two-argument overload (using [Uri]) of [NavController.navigate]
+ * method
+ */
 internal fun Fragment.navigate(
     uri: Uri,
     navOptions: NavOptions? = null
@@ -95,6 +119,14 @@ internal fun Fragment.navigate(
     }
 }
 
+/**
+ * Performs the two-argument overload (using [Uri]) of [navigate] method on the fragment's [getNavHostFragment] of type
+ * [Type]
+ * @param Type the type of the [FragmentManager.getPrimaryNavigationFragment] to be found
+ * @param uri *deepLink* parameter of the two-argument overload (using [Uri]) of [NavController.navigate] method
+ * @param navOptions *navOptions* parameter of the two-argument overload (using [Uri]) of [NavController.navigate]
+ * method
+ */
 @PublishedApi
 internal inline fun <reified Type : Fragment> Fragment.navigateFragment(
     uri: Uri,
