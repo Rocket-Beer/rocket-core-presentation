@@ -22,7 +22,8 @@ internal fun Fragment.popBackStack() {
 }
 
 /**
- * Calls [safeState] with [popBack] method as an action on the fragment's [getNavHostFragment]
+ * Performs [popBackStack] on the fragment's [getNavHostFragment] of type [Type]
+ * @param Type the type of the [FragmentManager.getPrimaryNavigationFragment] to be found
  */
 @PublishedApi
 internal inline fun <reified Type : Fragment> Fragment.popBackStackFragment() {
@@ -31,6 +32,13 @@ internal inline fun <reified Type : Fragment> Fragment.popBackStackFragment() {
     }
 }
 
+/**
+ * Calls [safeState] with the three-argument overload of [NavController.navigate] method as an action on the fragment's
+ * [NavController]
+ * @param id "resId" parameter of the three-argument overload of [NavController.navigate] method
+ * @param navOptions "navOptions" parameter of the three-argument overload of [NavController.navigate] method
+ * @param extras "args" parameter of the three-argument overload of [NavController.navigate] method
+ */
 internal fun Fragment.navigate(
     @IdRes id: Int,
     navOptions: NavOptions? = null,
@@ -41,6 +49,13 @@ internal fun Fragment.navigate(
     }
 }
 
+/**
+ * Performs [navigate] on the fragment's [getNavHostFragment] of type [Type]
+ * @param Type the type of the [FragmentManager.getPrimaryNavigationFragment] to be found
+ * @param id "resId" parameter of the three-argument overload of [NavController.navigate] method
+ * @param navOptions "navOptions" parameter of the three-argument overload of [NavController.navigate] method
+ * @param extras "args" parameter of the three-argument overload of [NavController.navigate] method
+ */
 @PublishedApi
 internal inline fun <reified Type : Fragment> Fragment.navigateFragment(
     @IdRes id: Int,
@@ -95,6 +110,7 @@ internal inline fun <reified Type : Fragment> Fragment.navigateFragment(
 /**
  * Starting from the bottom, returns the first [FragmentManager.getPrimaryNavigationFragment] found of type [Type] in
  * the back stack, if it exists. Otherwise returns null
+ * @param Type the type of the [Fragment] to be found
  */
 @PublishedApi
 internal inline fun <reified Type : Fragment> Fragment.getNavHostFragment(): Fragment? {
