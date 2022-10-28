@@ -7,6 +7,11 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 
+/**
+ * Calls [observeViewLifecycleOwner] with [liveData] and [block], using the activity as the [LifecycleOwner]
+ * @param liveData *liveData* parameter of the [observeViewLifecycleOwner] method
+ * @param block *block* parameter of the [observeViewLifecycleOwner] method
+ */
 fun <T : Any, L : LiveData<T>> AppCompatActivity.observe(liveData: L, block: (T) -> Unit) {
     try {
         observeViewLifecycleOwner(liveData, block, this)
@@ -15,6 +20,12 @@ fun <T : Any, L : LiveData<T>> AppCompatActivity.observe(liveData: L, block: (T)
     }
 }
 
+/**
+ * Calls [observeViewLifecycleOwner] with [liveData] and [block], using the [Fragment.getViewLifecycleOwner] as the
+ * [LifecycleOwner]. If the fragment's view is null, the fragment will be used as the [LifecycleOwner]
+ * @param liveData *liveData* parameter of the [observeViewLifecycleOwner] method
+ * @param block *block* parameter of the [observeViewLifecycleOwner] method
+ */
 fun <T : Any?, L : LiveData<T>> Fragment.observe(liveData: L, block: (T) -> Unit) {
     try {
         observeViewLifecycleOwner(liveData, block, viewLifecycleOwner)
@@ -23,6 +34,12 @@ fun <T : Any?, L : LiveData<T>> Fragment.observe(liveData: L, block: (T) -> Unit
     }
 }
 
+/**
+ * Calls [observeViewLifecycleOwner] with [liveData] and [block], using [lifecycleOwner] as the [LifecycleOwner]
+ * @param liveData *liveData* parameter of the [observeViewLifecycleOwner] method
+ * @param lifecycleOwner *lifecycleOwner* parameter of the [observeViewLifecycleOwner] method
+ * @param block *block* parameter of the [observeViewLifecycleOwner] method
+ */
 fun <T : Any, L : LiveData<T>> View.observe(liveData: L, lifecycleOwner: LifecycleOwner, block: (T) -> Unit) {
     observeViewLifecycleOwner(liveData, block, lifecycleOwner)
 }
