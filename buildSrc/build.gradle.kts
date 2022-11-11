@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.konan.properties.loadProperties
 plugins {
     `kotlin-dsl`
     java
+
 }
 
 repositories {
@@ -47,4 +48,5 @@ dependencies {
     implementation("rocket-gradle:rocket-plugin:1.0-dev02")
     implementation("androidx.navigation:navigation-safe-args-gradle-plugin:2.3.5")
     implementation("com.huawei.agconnect:agcp:1.4.2.300")
+    implementation("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.1.1")
 }

@@ -6,11 +6,9 @@ Core library to manage view module based in MVVM pattern.
 Conect to repository with GitHub credentials located in "local.properties" archive and config maven properties in "settings.gradle"
 
 local.proterties has to contain:
-> github.username=*******  
-> github.token=*********************
 
 settings.gradle has contain Rocket-Beer connection with maven
-~~~
+
 maven {  
     Properties properties = new Properties()  
     properties.load(file('local.properties').newDataInputStream())  
@@ -21,7 +19,7 @@ maven {
         password = properties.getProperty("github.token")  
     }  
 }
-~~~
+
 
 ## Core ViewModel user manual
 Core ViewModel package ease coroutines config initializing CoroutineExceptionHandler, CoroutineDispatcher and CoroutineScope.  
