@@ -17,8 +17,10 @@ allprojects {
     }
 }
 
+subprojects {
     println("\n********** Configuration for == $project == **********")
     apply(plugin = "rocket-plugin")
+}
 
     println("\n********** Sonar configuration for all projects **********")
     apply(plugin = "sonar.plugin")
