@@ -5,7 +5,7 @@ import com.rocket.android.core.navigation.NavigatorLifecycle
 /**
  * Contains an instance of *NavigatorLifecycle*
  *
- * Provides a singleton instance of [NavigatorLifecycle], which manages app's lifecycle
+ * Provides a singleton instance of [NavigatorLifecycle] to manage app's lifecycle
  *
  * @property provideNavigatorLifecycle instance of [NavigatorLifecycle]
  */

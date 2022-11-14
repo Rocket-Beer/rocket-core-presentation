@@ -20,6 +20,17 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+/**
+ * Offers functionality to manage app navigation
+ *
+ * Provides navigators to be used in the app navigation, as well as methods to manage navigation in activities,
+ * fragments and dialogs
+ *
+ * @property navigatorLifecycle instance of [NavigatorLifecycle]
+ * @property activity [NavigatorLifecycle.activity] of [navigatorLifecycle]
+ * @property context provides access to [activity]
+ * @property fragment currently active primary navigation fragment for the [activity] *FragmentManager*
+ */
 sealed class BaseNavigator(private val navigatorLifecycle: NavigatorLifecycle) {
     abstract class AppBaseNavigator(navigatorLifecycle: NavigatorLifecycle) :
         BaseNavigator(navigatorLifecycle = navigatorLifecycle)

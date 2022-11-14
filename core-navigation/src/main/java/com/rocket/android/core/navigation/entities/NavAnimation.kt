@@ -3,9 +3,9 @@ package com.rocket.android.core.navigation.entities
 import androidx.navigation.AnimBuilder
 
 /**
- * Custom *Animations* or Animator resources for navigations
+ * Custom *Animations* or Animator resources for navigation
  *
- * This class contains four properties for the different animations which can be applied in navigations
+ * This class contains four properties for the different animations which can be applied in navigation
  *
  * @property enter "enter" property of the [AnimBuilder] class
  * @property exit "exit" property of the [AnimBuilder] class
