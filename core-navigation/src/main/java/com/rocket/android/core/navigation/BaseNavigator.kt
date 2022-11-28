@@ -7,6 +7,7 @@ import androidx.annotation.IdRes
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavDirections
 import androidx.navigation.NavOptions
 import androidx.navigation.NavOptionsBuilder
@@ -124,7 +125,7 @@ sealed class BaseNavigator(private val navigatorLifecycle: NavigatorLifecycle) {
 
     /**
      * Calls [popBackStackFragment] (with [Type] as parameter) on [fragment] inside the Main thread
-     * @param [Type]
+     * @param [Type] *Type* parameter of the [popBackStackFragment] method
      */
     inline fun <reified Type : Fragment> goBackFragment() {
         checkMainThread {
@@ -217,6 +218,14 @@ sealed class BaseNavigator(private val navigatorLifecycle: NavigatorLifecycle) {
         }
     }
 
+    /**
+     * Calls the two-argument overload (using [Uri]) of [navigateFragment] (with [uri] and [navOptions] as its
+     * arguments) on [fragment] inside the Main thread
+     * @param Type *Type* parameter of the two-argument overload (using [Uri]) of the [navigateFragment] method
+     * @param uri *uri* parameter of the two-argument overload (using [Uri]) of the [navigateFragment] method
+     * @param navOptions *navOptions* parameter of the two-argument overload (using [Uri]) of the [navigateFragment]
+     * method
+     */
     inline fun <reified Type : Fragment> goToFragment(
         uri: Uri,
         navOptions: NavOptions? = null
@@ -228,12 +237,21 @@ sealed class BaseNavigator(private val navigatorLifecycle: NavigatorLifecycle) {
     // endregion
 
     // region DIALOG-FRAGMENT
+    /**
+     * Calls [FragmentActivity.show] (with [dialog] and [tag] as its parameters) on [activity] inside the Main thread
+     * @param dialog *dialog* parameter of the [FragmentActivity.show] method
+     * @param tag *tag* parameter of the [FragmentActivity.show] method
+     */
     fun show(dialog: DialogFragment, tag: String) {
         checkMainThread {
             activity?.show(dialog = dialog, tag = tag)
         }
     }
 
+    /**
+     * Calls [FragmentActivity.dismiss] (with [tag] as its parameter) on [activity] inside the Main thread
+     * @param tag *tag* parameter of the [FragmentActivity.dismiss] method
+     */
     fun dismiss(tag: String) {
         checkMainThread {
             activity?.dismiss(tag = tag)
@@ -242,9 +260,16 @@ sealed class BaseNavigator(private val navigatorLifecycle: NavigatorLifecycle) {
     // endregion
 
     // region ACTIVITY
+    /**
+     * Calls [FragmentManager.findFragmentByTag] (with [tag] as its parameter) on the [FragmentManager] of [activity]
+     * @param tag *tag* parameter of the [FragmentManager.findFragmentByTag] method
+     */
     fun findFragmentByTag(tag: String): Fragment? =
         activity?.supportFragmentManager?.findFragmentByTag(tag)
 
+    /**
+     * Calls [FragmentActivity.finish] on [activity] inside the Main thread
+     */
     fun finish() {
         checkMainThread {
             activity?.finish()
