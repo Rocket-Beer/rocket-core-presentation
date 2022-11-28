@@ -4,13 +4,13 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import androidx.annotation.IdRes
-import androidx.navigation.NavOptionsBuilder
-import androidx.navigation.PopUpToBuilder
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavDirections
 import androidx.navigation.NavOptions
+import androidx.navigation.NavOptionsBuilder
+import androidx.navigation.PopUpToBuilder
 import androidx.navigation.navOptions
 import com.rocket.android.core.navigation.extension.dismiss
 import com.rocket.android.core.navigation.extension.navigate
