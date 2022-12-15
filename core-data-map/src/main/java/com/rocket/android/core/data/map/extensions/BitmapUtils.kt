@@ -3,6 +3,7 @@ package com.rocket.android.core.data.map.extensions
 import android.content.Context
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.content.res.Resources.Theme
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
@@ -68,6 +69,14 @@ fun bitmapDescriptorFromVectorGMS(
     }
 }
 
+/**
+ * Creates a [BitmapDescriptorHMS] from a [VectorDrawableCompat]
+ * @param context [Context] to access drawable and style resources
+ * @param vectorResId id of the [VectorDrawableCompat]
+ * @param themeResId id of the [Theme] to be applied to the [VectorDrawableCompat]. If it is -1 or a parsing
+ * error is found, the returned drawable will be styled for the [context] theme
+ * @return the [BitmapDescriptorHMS] created
+ */
 fun bitmapDescriptorFromVectorHMS(
     context: Context,
     @DrawableRes vectorResId: Int,
@@ -113,6 +122,13 @@ fun bitmapDescriptorFromVectorHMS(
     }
 }
 
+/**
+ * Creates a [BitmapDescriptor] from a [BitmapDescriptorHMS] built with [bitmapDescriptorFromVectorHMS]
+ * @param context *context* param in [bitmapDescriptorFromVectorHMS]
+ * @param vectorResId *vectorResId* param in [bitmapDescriptorFromVectorHMS]
+ * @param themeResId *themeResId* param in [bitmapDescriptorFromVectorHMS]
+ * @return the [BitmapDescriptor] created
+ */
 fun bitmapDescriptorFromVector(
     context: Context,
     @DrawableRes vectorResId: Int,
