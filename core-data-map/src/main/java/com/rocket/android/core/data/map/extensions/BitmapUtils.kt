@@ -170,6 +170,15 @@ fun bitmapDescriptorFromVector(
     }
 }
 
+/**
+ * Creates a [BitmapDescriptor] from a given url which holds a [Bitmap]. If version number of the package
+ * *com.huawei.hwid* is lower than 5.0.0.003-01, the bitmap will be created from the Google Maps Services library
+ * @param context current [Context]
+ * @param iconUrl url containing a [Bitmap]
+ * @param width if this value and [height] are different from -1, the [Bitmap] will be scaled
+ * @param height if this value and [width] are different from -1, the [Bitmap] will be scaled
+ * @return the [BitmapDescriptor] created
+ */
 fun bitmapDescriptorFromUrl(
     context: Context,
     iconUrl: String,
@@ -206,6 +215,11 @@ fun bitmapDescriptorFromUrl(
         null
     }
 
+/**
+ * Checks version number of the package *com.huawei.hwid*
+ * @param context [Context] to obtain access to the [PackageManager]
+ * @return true if package version is equal or greater than 5.0.0.003-01, if not false
+ */
 fun isHmsCoreVersionAvailable(context: Context): Boolean {
     return try {
         val pm: PackageManager = context.packageManager
