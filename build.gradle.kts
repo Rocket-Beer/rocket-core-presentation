@@ -1,3 +1,7 @@
+plugins {
+    id("jacoco")
+}
+
 allprojects {
     repositories {
         google()
@@ -15,7 +19,19 @@ allprojects {
             }
         }
     }
+    apply(plugin = "jacoco")
+    jacoco {
+        toolVersion = "0.8.7"
+    }
+
+    tasks.withType(Test::class.java) {
+        configure<JacocoTaskExtension> {
+            isIncludeNoLocationClasses = true
+            excludes = listOf("jdk.internal.*")
+        }
+    }
 }
+
 
 subprojects {
     println("\n********** Configuration for == $project == **********")

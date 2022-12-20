@@ -49,4 +49,5 @@ dependencies {
     implementation("androidx.navigation:navigation-safe-args-gradle-plugin:2.3.5")
     implementation("com.huawei.agconnect:agcp:1.4.2.300")
     implementation("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.1.1")
+    implementation("org.jacoco:org.jacoco.core:0.8.7")
 }
