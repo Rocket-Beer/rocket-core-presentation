@@ -13,6 +13,13 @@ import com.rocket.android.core.data.map.extensions.isHmsCoreVersionAvailable
 import com.google.android.gms.maps.model.MarkerOptions as MarkerOptionsGMS
 import com.huawei.hms.maps.model.MarkerOptions as MarkerOptionsHMS
 
+/**
+ * TODO
+ *
+ * TODO
+ *
+ * @property hmsMarkerOptions Instance of [MarkerOptionsHMS], which defines options for a marker
+ */
 class MarkerOptions(
     private val context: Context
 ) {
@@ -45,11 +52,21 @@ class MarkerOptions(
         }
     }
 
+    /**
+     * Sets the location for [hmsMarkerOptions]
+     * @param position [LatLng] object with the position for [hmsMarkerOptions]
+     */
     fun setPosition(position: LatLng) {
         gmsMarkerOptions?.position(position.gmsLatLng)
         hmsMarkerOptions?.position(position.hmsLatLng)
     }
 
+    /**
+     * Sets the icon for [hmsMarkerOptions]
+     * @param icon id of the VectorDrawableCompat
+     * @param theme id of the Theme to be applied to the VectorDrawableCompat. If it is -1 or a parsing error is found,
+     * the returned drawable will be styled for the context theme
+     */
     fun setIcon(@DrawableRes icon: Int, @StyleRes theme: Int = -1) {
         gmsMarkerOptions?.icon(
             bitmapDescriptorFromVectorGMS(
@@ -67,6 +84,10 @@ class MarkerOptions(
         )
     }
 
+    /**
+     * Sets the icon for [hmsMarkerOptions]
+     * @param bitmapDescriptor [BitmapDescriptor] to be used for setting the icon
+     */
     fun setIcon(bitmapDescriptor: BitmapDescriptor) {
         gmsMarkerOptions?.icon(bitmapDescriptor.gmsBitmapDescriptor)
         hmsMarkerOptions?.icon(bitmapDescriptor.hmsBitmapDescriptor)
@@ -83,21 +104,37 @@ class MarkerOptions(
         }
     }
 
+    /**
+     * Sets the title for [hmsMarkerOptions]
+     * @param title title to be used
+     */
     fun setTitle(title: String) {
         gmsMarkerOptions?.title(title)
         hmsMarkerOptions?.title(title)
     }
 
+    /**
+     * Sets the snippet for [hmsMarkerOptions]
+     * @param snippet snippet to be used
+     */
     fun setSnippet(snippet: String) {
         gmsMarkerOptions?.snippet(snippet)
         hmsMarkerOptions?.snippet(snippet)
     }
 
+    /**
+     * Sets the draggability for [hmsMarkerOptions]
+     * @param draggable indicates whether [hmsMarkerOptions] is draggable
+     */
     fun setDraggable(draggable: Boolean) {
         gmsMarkerOptions?.draggable(draggable)
         hmsMarkerOptions?.draggable(draggable)
     }
 
+    /**
+     * Sets the visibility for [hmsMarkerOptions]
+     * @param visible indicates whether [hmsMarkerOptions] is visible
+     */
     fun setVisible(visible: Boolean) {
         gmsMarkerOptions?.visible(visible)
         hmsMarkerOptions?.visible(visible)
