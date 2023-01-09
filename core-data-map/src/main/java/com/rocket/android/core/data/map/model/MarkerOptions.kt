@@ -14,14 +14,14 @@ import com.google.android.gms.maps.model.MarkerOptions as MarkerOptionsGMS
 import com.huawei.hms.maps.model.MarkerOptions as MarkerOptionsHMS
 
 /**
- * TODO
+ * Class which holds some options applied to a marker on a map, such as its position or icon
  *
- * TODO
+ * Contains an instance of [MarkerOptionsHMS] as well as methods to manage it
  *
- * @property hmsMarkerOptions Instance of [MarkerOptionsHMS], which defines options for a marker
+ * @property hmsMarkerOptions instance of [MarkerOptionsHMS], which defines options for a marker
  */
 class MarkerOptions(
-    private val context: Context
+    private val context: Context,
 ) {
     var id: String = ""
 

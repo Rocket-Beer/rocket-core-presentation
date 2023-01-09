@@ -35,14 +35,17 @@ import com.huawei.hms.maps.model.MapStyleOptions as HmsMapStyleOptions
 import com.huawei.hms.maps.model.Marker as HmsMarker
 
 /**
- * TODO
+ * Class which represents a map
  *
- * TODO
+ * Contains all the necessary information to show a map and manage its camera, markers, polygons and behaviour
  *
- * @property hmsMapView Instance of [HmsMapView], which is a view that displays a map with data obtained from Huawei
+ * @property hmsMapView instance of [HmsMapView], which is a view that displays a map with data obtained from Huawei
  * Maps Service
- * @property hmsMap Instance of [HuaweiMap], which holds all methods related to the map
+ * @property hmsMap instance of [HuaweiMap], which holds all methods related to the map
  * @property hmsMarkersList [HmsMarker]'s [List]. They represent icons placed at a particular point on the map's surface
+ * @param context [Context] object with the current context for the layout
+ * @param attributeSet [AttributeSet] object to be passed to the layout
+ * @param defStyleAttr style to be applied to the layout
  */
 class CoreMapView @JvmOverloads constructor(
     context: Context,

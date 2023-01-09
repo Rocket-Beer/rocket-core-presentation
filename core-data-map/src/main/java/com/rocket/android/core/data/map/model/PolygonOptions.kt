@@ -9,14 +9,14 @@ import com.google.android.gms.maps.model.PolygonOptions as GmsPolygonOptions
 import com.huawei.hms.maps.model.PolygonOptions as HmsPolygonOptions
 
 /**
- * TODO
+ * Class which holds some options applied to a polygon on a map, such as its points or holes
  *
- * TODO
+ * Contains an instance of [HmsPolygonOptions] as well as methods to manage it
  *
- * @property hmsPolygonOptions Instance of [HmsPolygonOptions], which defines options for a polygon
+ * @property hmsPolygonOptions instance of [HmsPolygonOptions], which defines options for a polygon
  */
 class PolygonOptions(
-    context: Context
+    context: Context,
 ) {
     var gmsPolygonOptions: GmsPolygonOptions? = null
         private set

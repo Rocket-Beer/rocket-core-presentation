@@ -9,11 +9,11 @@ import com.huawei.hms.maps.model.BitmapDescriptor as HmsBitmapDescriptor
  *
  * Contains an instance of [HmsBitmapDescriptor]
  *
- * @property hmsBitmapDescriptor Instance of [HmsBitmapDescriptor]
+ * @property hmsBitmapDescriptor instance of [HmsBitmapDescriptor]
  */
 class BitmapDescriptor(
     val gmsBitmapDescriptor: GmsBitmapDescriptior? = null,
-    val hmsBitmapDescriptor: HmsBitmapDescriptor? = null
+    val hmsBitmapDescriptor: HmsBitmapDescriptor? = null,
 )
 
 fun GmsBitmapDescriptior.toBitmapDescription() = BitmapDescriptor(gmsBitmapDescriptor = this)

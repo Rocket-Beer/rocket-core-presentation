@@ -10,11 +10,11 @@ import com.google.android.gms.maps.model.Marker as MarkerGMS
 import com.huawei.hms.maps.model.Marker as MarkerHMS
 
 /**
- * TODO
+ * Class which represents a marker on a map
  *
- * TODO
+ * Contains an instance of [MarkerHMS] as well as methods to manage it
  *
- * @property hmsMarker Instance of [MarkerHMS]
+ * @property hmsMarker instance of [MarkerHMS]
  */
 class Marker {
     var gmsMarker: MarkerGMS? = null

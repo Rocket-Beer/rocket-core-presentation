@@ -4,11 +4,11 @@ import com.google.android.gms.maps.model.Polygon as GmsPolygon
 import com.huawei.hms.maps.model.Polygon as HmsPolygon
 
 /**
- * TODO
+ * Class which represents a polygon on a map
  *
- * TODO
+ * Contains an instance of [HmsPolygon]
  *
- * @property hmsPolygon Instance of [HmsPolygon]
+ * @property hmsPolygon instance of [HmsPolygon]
  */
 class Polygon {
     var gmsPolygon: GmsPolygon? = null

@@ -6,16 +6,16 @@ import com.google.android.gms.maps.model.LatLng as LatLngGMS
 import com.huawei.hms.maps.model.LatLng as LatLngHMS
 
 /**
- * TODO
+ * Class which represents a pair of latitude and longitude coordinates
  *
- * TODO
+ * Contains an instance of [LatLngHMS]
  *
- * @property hmsLatLng Instance of [LatLngHMS] built from [latitude] and [longitude]
+ * @property hmsLatLng instance of [LatLngHMS] built from [latitude] and [longitude]
  */
 @Parcelize
 data class LatLng(
     val latitude: Double,
-    val longitude: Double
+    val longitude: Double,
 ) : Parcelable {
     val gmsLatLng: LatLngGMS by lazy {
         LatLngGMS(latitude, longitude)
