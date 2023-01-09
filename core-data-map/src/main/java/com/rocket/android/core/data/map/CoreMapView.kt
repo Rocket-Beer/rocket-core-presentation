@@ -34,10 +34,20 @@ import com.huawei.hms.maps.MapView as HmsMapView
 import com.huawei.hms.maps.model.MapStyleOptions as HmsMapStyleOptions
 import com.huawei.hms.maps.model.Marker as HmsMarker
 
+/**
+ * TODO
+ *
+ * TODO
+ *
+ * @property hmsMapView Instance of [HmsMapView], which is a view that displays a map with data obtained from Huawei
+ * Maps Service
+ * @property hmsMap Instance of [HuaweiMap], which holds all methods related to the map
+ * @property hmsMarkersList [HmsMarker]'s [List]. They represent icons placed at a particular point on the map's surface
+ */
 class CoreMapView @JvmOverloads constructor(
     context: Context,
     attributeSet: AttributeSet? = null,
-    defStyleAttr: Int = 0
+    defStyleAttr: Int = 0,
 ) : ConstraintLayout(context, attributeSet, defStyleAttr) {
 
     private var gmsMapView: GmsMapView? = null
@@ -85,46 +95,74 @@ class CoreMapView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Calls [onCreate] method on [hmsMapView] passing [bundle] as a parameter
+     */
     fun onCreate(bundle: Bundle?) {
         gmsMapView?.onCreate(bundle)
         hmsMapView?.onCreate(bundle)
     }
 
+    /**
+     * Calls [onStart] method on [hmsMapView]
+     */
     fun onStart() {
         gmsMapView?.onStart()
         hmsMapView?.onStart()
     }
 
+    /**
+     * Calls [onResume] method on [hmsMapView]
+     */
     fun onResume() {
         gmsMapView?.onResume()
         hmsMapView?.onResume()
     }
 
+    /**
+     * Calls [onPause] method on [hmsMapView]
+     */
     fun onPause() {
         gmsMapView?.onPause()
         hmsMapView?.onPause()
     }
 
+    /**
+     * Calls [onStop] method on [hmsMapView]
+     */
     fun onStop() {
         gmsMapView?.onStop()
         hmsMapView?.onStop()
     }
 
+    /**
+     * Calls [onDestroy] method on [hmsMapView]
+     */
     fun onDestroy() {
         gmsMapView?.onDestroy()
         hmsMapView?.onDestroy()
     }
 
+
+    /**
+     * Calls [onLowMemory] method on [hmsMapView]
+     */
     fun onLowMemory() {
         gmsMapView?.onLowMemory()
         hmsMapView?.onLowMemory()
     }
 
+    /**
+     * Stores [hmsMapView]'s state inside [bundle] before getting destroyed
+     */
     fun onSaveInstanceState(bundle: Bundle) {
         gmsMapView?.onSaveInstanceState(bundle)
         hmsMapView?.onSaveInstanceState(bundle)
     }
 
+    /**
+     * Used to acquire the map for [hmsMapView] and then call [mapReady] when it is ready
+     */
     fun getMapAsync(mapReady: () -> Unit) {
         gmsMapView?.getMapAsync { map ->
             gmsMap = map
@@ -137,36 +175,58 @@ class CoreMapView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Sets the styling of [hmsMap] with the options provided with [style]
+     */
     fun setStyle(@RawRes style: Int) {
         gmsMap?.setMapStyle(GmsMapStyleOptions.loadRawResourceStyle(context, style))
         hmsMap?.setMapStyle(HmsMapStyleOptions.loadRawResourceStyle(context, style))
     }
 
+    /**
+     * Sets the preference for whether [hmsMap]'s Toolbar should be enabled or disabled, indicated by [enabled]
+     */
     fun mapToolbarEnabled(enabled: Boolean) {
         gmsMap?.uiSettings?.isMapToolbarEnabled = enabled
         hmsMap?.uiSettings?.isMapToolbarEnabled = enabled
     }
 
+    /**
+     * Sets the preference for whether all gestures should be enabled or disabled on [hmsMap], indicated by [enabled]
+     */
     fun allGesturesEnabled(enabled: Boolean) {
         gmsMap?.uiSettings?.setAllGesturesEnabled(enabled)
         hmsMap?.uiSettings?.setAllGesturesEnabled(enabled)
     }
 
+    /**
+     * Sets the preference for whether my-location button should be enabled or disabled, indicated by [enabled]
+     */
     fun myLocationButtonEnabled(enabled: Boolean) {
         gmsMap?.uiSettings?.isMyLocationButtonEnabled = enabled
         hmsMap?.uiSettings?.isMyLocationButtonEnabled = enabled
     }
 
+    /**
+     * Sets the preference for whether the compass should be enabled or disabled, indicated by [enabled]
+     */
     fun compassEnabled(enabled: Boolean) {
         gmsMap?.uiSettings?.isCompassEnabled = enabled
         hmsMap?.uiSettings?.isCompassEnabled = enabled
     }
 
+    /**
+     * Sets the preference for whether the zoom controls should be enabled or disabled, indicated by [enabled]
+     */
     fun zoomControlsEnabled(enabled: Boolean) {
         gmsMap?.uiSettings?.isZoomControlsEnabled = enabled
         hmsMap?.uiSettings?.isZoomControlsEnabled = enabled
     }
 
+    /**
+     * Removes all markers, polylines, polygons, overlays, etc from [hmsMap], as well as the markers inside
+     * [hmsMarkersList]
+     */
     fun clear() {
         gmsMap?.let { map ->
             gmsMarkersList.clear()
@@ -179,21 +239,34 @@ class CoreMapView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Sets the preference for whether my-location layer should be enabled or disabled, indicated by [enabled]
+     */
     @RequiresPermission(anyOf = [Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION])
     fun myLocationEnabled(enabled: Boolean) {
         gmsMap?.isMyLocationEnabled = enabled
         hmsMap?.isMyLocationEnabled = enabled
     }
 
+    /**
+     * Gets the status of my-location layer
+     * @return true if the my-location layer is enabled; false otherwise
+     */
     fun isMyLocationEnabled(): Boolean? {
         return gmsMap?.isMyLocationEnabled ?: hmsMap?.isMyLocationEnabled
     }
 
+    /**
+     * Specifies whether [hmsMap] should be created in lite mode, indicated by [enabled]
+     */
     fun liteMode(enabled: Boolean) {
         gmsMap?.mapType = GoogleMapOptions().liteMode(enabled).mapType
         hmsMap?.mapType = HuaweiMapOptions().liteMode(enabled).mapType
     }
 
+    /**
+     * Sets the action to be performed (contained in [onClick]) when clicking on [hmsMap]
+     */
     fun setOnMapClickListener(onClick: () -> Unit) {
         gmsMap?.setOnMapClickListener {
             onClick()
@@ -204,6 +277,11 @@ class CoreMapView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Adds a marker to [hmsMap] and [hmsMarkersList]
+     * @param markerOptions [MarkerOptions] object which defines how to render the marker
+     * @return the [Marker] that was added. Might be null if there's an error while performing this operation
+     */
     fun addMarker(markerOptions: MarkerOptions): Marker? {
         if (gmsMap != null) {
             return gmsMap?.addMarker(markerOptions.gmsMarkerOptions)?.also { marker ->
@@ -222,6 +300,10 @@ class CoreMapView @JvmOverloads constructor(
         return null
     }
 
+    /**
+     * Adds a [List] of markers to [hmsMap] and [hmsMarkersList]
+     * @param markers [MarkerOptions]'s [List] which defines how to render each of the markers
+     */
     fun setMarkers(markers: List<MarkerOptions>) {
         markers.forEach { markerOption ->
             gmsMap?.addMarker(markerOption.gmsMarkerOptions)?.also { marker ->
@@ -236,6 +318,9 @@ class CoreMapView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Sets the visibility to true of all the markers whose ids are contained inside [list]
+     */
     fun showMarkersI(list: List<MarkerOptions>) {
         list.forEach { markerOptions ->
             if (gmsMap != null) {
@@ -254,6 +339,9 @@ class CoreMapView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Sets the visibility to false of all the markers whose ids are contained inside [list]
+     */
     fun hideMarkersI(list: List<MarkerOptions>) {
         list.forEach { markerOptions ->
             if (gmsMap != null) {
@@ -272,6 +360,9 @@ class CoreMapView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Removes all the markers from [hmsMap] and [hmsMarkersList] whose ids are contained inside [list]
+     */
     fun clearMarkersI(list: List<MarkerOptions>) {
         list.forEach { markerOptions ->
             if (gmsMap != null) {
@@ -294,6 +385,9 @@ class CoreMapView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Sets the action to be performed (contained in [clickListener]) when clicking on a marker located in [hmsMap]
+     */
     fun onMarkerClickListener(clickListener: ((Marker) -> Unit)) {
         gmsMap?.setOnMarkerClickListener { marker ->
             clickListener(marker.toMarker())
@@ -306,10 +400,16 @@ class CoreMapView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Sets the actions to be performed when dragging a marker located in [hmsMap]
+     * @param dragStartListener Called when a marker starts being dragged
+     * @param dragListener Called repeatedly while a marker is being dragged
+     * @param dragEndListener Called when a marker has finished being dragged
+     */
     fun onMarkerDragListener(
         dragStartListener: ((Marker) -> Unit),
         dragListener: ((Marker) -> Unit),
-        dragEndListener: ((Marker) -> Unit)
+        dragEndListener: ((Marker) -> Unit),
     ) {
         gmsMap?.setOnMarkerDragListener(object : GoogleMap.OnMarkerDragListener {
             override fun onMarkerDragStart(marker: GmsMarker) {
@@ -340,6 +440,11 @@ class CoreMapView @JvmOverloads constructor(
         })
     }
 
+    /**
+     * Adds a polygon to [hmsMap] and returns it afterwards. Might be null if there's an error while performing this
+     * operation
+     * @param polygon [PolygonOptions] object which defines how to render the polygon
+     */
     fun addPolygon(polygon: PolygonOptions): Polygon? {
         if (gmsMap != null) {
             return gmsMap?.addPolygon(polygon.gmsPolygonOptions)?.toPolygon()
@@ -352,6 +457,9 @@ class CoreMapView @JvmOverloads constructor(
         return null
     }
 
+    /**
+     * Sets the action to be performed (contained in [onIdleListener]) when [hmsMap]'s camera is idle
+     */
     fun onCameraIdle(onIdleListener: () -> Unit) {
         gmsMap?.setOnCameraIdleListener {
             onIdleListener()
@@ -362,15 +470,25 @@ class CoreMapView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Gets [hmsMap]'s camera zoom level near the center of the screen
+     */
     fun getCameraZoom(): Float? {
         return gmsMap?.cameraPosition?.zoom ?: hmsMap?.cameraPosition?.zoom
     }
 
+    /**
+     * Gets the location that [hmsMap]'s camera is pointing at
+     */
     fun getCameraTarget(): LatLng? {
         return gmsMap?.cameraPosition?.target?.toLatLng()
             ?: hmsMap?.cameraPosition?.target?.toLatLng()
     }
 
+    /**
+     * Sets [hmsMap]'s camera location to [position] and sets its zoom level to [zoom]
+     * @param animateDuration [hmsMap]'s camera movement duration in milliseconds
+     */
     fun setCameraPosition(position: LatLng, zoom: Float, animateDuration: Int) {
         gmsMap?.let { map ->
             val gmsCameraPosition = CameraPosition.builder()
