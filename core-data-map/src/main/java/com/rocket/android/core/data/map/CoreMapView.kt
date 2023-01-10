@@ -146,7 +146,6 @@ class CoreMapView @JvmOverloads constructor(
         hmsMapView?.onDestroy()
     }
 
-
     /**
      * Calls [onLowMemory] method on [hmsMapView]
      */
