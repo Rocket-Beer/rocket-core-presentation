@@ -5,6 +5,15 @@ import android.app.Application
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 
+/**
+ * Provides access to the current activity
+ *
+ * Contains an instance of [Application.ActivityLifecycleCallbacks] to be used in
+ * [Application.registerActivityLifecycleCallbacks], so that it can provide access to the current activity
+ *
+ * @property activity current activity
+ * @property activityLifecycleCallbacks callbacks used to set [activity]
+ */
 class NavigatorLifecycle {
     var activity: FragmentActivity? = null
 
@@ -34,6 +43,10 @@ class NavigatorLifecycle {
         }
     }
 
+    /**
+     * Assigns [activity] to the current activity provided that it does not implement [NavigatorIgnoreActivity]
+     * @param currentActivity current activity
+     */
     private fun setCurrentActivity(currentActivity: Activity) {
         if (currentActivity is FragmentActivity && currentActivity !is NavigatorIgnoreActivity) {
             this.activity = currentActivity
