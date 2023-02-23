@@ -17,20 +17,15 @@ import com.huawei.hms.api.HuaweiApiAvailability
 import com.huawei.hms.maps.HuaweiMap
 import com.huawei.hms.maps.HuaweiMapOptions
 import com.rocket.android.core.data.map.extensions.isHmsCoreVersionAvailable
-import com.rocket.android.core.data.map.model.LatLng
-import com.rocket.android.core.data.map.model.Marker
-import com.rocket.android.core.data.map.model.MarkerOptions
-import com.rocket.android.core.data.map.model.Polygon
-import com.rocket.android.core.data.map.model.PolygonOptions
-import com.rocket.android.core.data.map.model.toLatLng
-import com.rocket.android.core.data.map.model.toMarker
-import com.rocket.android.core.data.map.model.toPolygon
+import com.rocket.android.core.data.map.model.*
 import com.google.android.gms.common.ConnectionResult as ConnectionResultGMS
 import com.google.android.gms.maps.MapView as GmsMapView
+import com.google.android.gms.maps.model.CircleOptions as CircleOptionsGMS
 import com.google.android.gms.maps.model.MapStyleOptions as GmsMapStyleOptions
 import com.google.android.gms.maps.model.Marker as GmsMarker
 import com.huawei.hms.api.ConnectionResult as ConnectionResultHMS
 import com.huawei.hms.maps.MapView as HmsMapView
+import com.huawei.hms.maps.model.CircleOptions as CircleOptionsHMS
 import com.huawei.hms.maps.model.MapStyleOptions as HmsMapStyleOptions
 import com.huawei.hms.maps.model.Marker as HmsMarker
 
@@ -514,6 +509,34 @@ class CoreMapView @JvmOverloads constructor(
                 animateDuration,
                 null
             )
+        }
+    }
+
+    fun drawCircle(customCircleOptions: CustomCircleOptions) {
+
+        gmsMap?.let { map ->
+            val circleOptions = CircleOptionsGMS()
+                .center(customCircleOptions.center.gmsLatLng)
+                .radius(customCircleOptions.radius)
+                .strokeColor(customCircleOptions.strokeColor)
+                .strokeWidth(customCircleOptions.strokeWidth)
+                .fillColor(customCircleOptions.fillColor)
+                .zIndex(customCircleOptions.zIndex)
+                .visible(customCircleOptions.visible)
+
+            map.addCircle(circleOptions)
+        }
+
+        hmsMap?.let { map ->
+            val circleOptions = CircleOptionsHMS()
+                .center(customCircleOptions.center.hmsLatLng)
+                .radius(customCircleOptions.radius)
+                .strokeColor(customCircleOptions.strokeColor)
+                .strokeWidth(customCircleOptions.strokeWidth)
+                .fillColor(customCircleOptions.fillColor)
+                .zIndex(customCircleOptions.zIndex)
+                .visible(customCircleOptions.visible)
+            map.addCircle(circleOptions)
         }
     }
 }
