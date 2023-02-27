@@ -15,6 +15,14 @@ import java.net.URL
 import com.google.android.gms.maps.model.BitmapDescriptor as BitmapDescriptorGMS
 import com.google.android.gms.maps.model.BitmapDescriptorFactory as BitmapDescriptorFactoryGMS
 
+/**
+ * Creates a [BitmapDescriptorGMS] from a [VectorDrawableCompat]
+ * @param context [Context] to access drawable and style resources
+ * @param vectorResId id of the [VectorDrawableCompat]
+ * @param themeResId id of the [Theme] to be applied to the [VectorDrawableCompat]. If it is -1 or a parsing
+ * error is found, the returned drawable will be styled for the [context] theme
+ * @return the [BitmapDescriptorGMS] created
+ */
 fun bitmapDescriptorFromVectorGMS(
     context: Context,
     @DrawableRes vectorResId: Int,
@@ -60,6 +68,13 @@ fun bitmapDescriptorFromVectorGMS(
     }
 }
 
+/**
+ * Creates a [BitmapDescriptor] from a [BitmapDescriptorGMS] built with [bitmapDescriptorFromVectorGMS]
+ * @param context *context* param in [bitmapDescriptorFromVectorGMS]
+ * @param vectorResId *vectorResId* param in [bitmapDescriptorFromVectorGMS]
+ * @param themeResId *themeResId* param in [bitmapDescriptorFromVectorGMS]
+ * @return the [BitmapDescriptor] created
+ */
 fun bitmapDescriptorFromVector(
     context: Context,
     @DrawableRes vectorResId: Int,
@@ -72,6 +87,16 @@ fun bitmapDescriptorFromVector(
     )?.toBitmapDescription()
 }
 
+
+/**
+ * Creates a [BitmapDescriptor] from a given url which holds a [Bitmap]. The bitmap will be created
+ * from the Google Maps Services library
+ * @param context current [Context]
+ * @param iconUrl url containing a [Bitmap]
+ * @param width if this value and [height] are different from -1, the [Bitmap] will be scaled
+ * @param height if this value and [width] are different from -1, the [Bitmap] will be scaled
+ * @return the [BitmapDescriptor] created
+ */
 fun bitmapDescriptorFromUrl(
     context: Context,
     iconUrl: String,
