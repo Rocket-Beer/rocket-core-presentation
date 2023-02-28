@@ -1,9 +1,21 @@
 package com.rocket.android.core.data.gmsmap.model
 
-import com.google.android.gms.maps.model.BitmapDescriptor as GmsBitmapDescriptior
+import android.graphics.Bitmap
+import com.google.android.gms.maps.model.BitmapDescriptor as GmsBitmapDescriptor
 
+/**
+ * Class which holds the definition of a [Bitmap] image
+ *
+ * Contains an instance of [GmsBitmapDescriptor]
+ *
+ * @property gmsBitmapDescriptor instance of [GmsBitmapDescriptor]
+ */
 class BitmapDescriptor(
-    val gmsBitmapDescriptor: GmsBitmapDescriptior? = null,
+    val gmsBitmapDescriptor: GmsBitmapDescriptor? = null
 )
 
-fun GmsBitmapDescriptior.toBitmapDescription() = BitmapDescriptor(gmsBitmapDescriptor = this)
+/**
+ * Creates a [BitmapDescriptor] from the GMS bitmap descriptor
+ * @return the [BitmapDescriptor] created
+ */
+fun GmsBitmapDescriptor.toBitmapDescription() = BitmapDescriptor(gmsBitmapDescriptor = this)
