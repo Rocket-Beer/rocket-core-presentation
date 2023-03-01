@@ -54,7 +54,6 @@ dependencies {
     implementation("androidx.annotation:annotation:1.2.0")
     implementation("androidx.fragment:fragment-ktx:1.3.4")
 
-    implementation("com.google.android.gms:play-services-maps:17.0.1")
     implementation("com.huawei.hms:maps:5.3.0.300")
 
     testImplementation("junit:junit:4.13.2")

@@ -4,9 +4,7 @@ import android.content.Context
 import androidx.annotation.DrawableRes
 import androidx.annotation.StyleRes
 import com.rocket.android.core.data.map.extensions.bitmapDescriptorFromUrl
-import com.rocket.android.core.data.map.extensions.bitmapDescriptorFromVectorGMS
 import com.rocket.android.core.data.map.extensions.bitmapDescriptorFromVectorHMS
-import com.google.android.gms.maps.model.Marker as MarkerGMS
 import com.huawei.hms.maps.model.Marker as MarkerHMS
 
 /**
@@ -17,7 +15,6 @@ import com.huawei.hms.maps.model.Marker as MarkerHMS
  * @property hmsMarker instance of [MarkerHMS]
  */
 class Marker {
-    var gmsMarker: MarkerGMS? = null
     var hmsMarker: MarkerHMS? = null
 
     /**
@@ -26,7 +23,7 @@ class Marker {
      */
     fun getTag(): Any? {
         return try {
-            gmsMarker?.tag ?: hmsMarker?.tag
+            hmsMarker?.tag
         } catch (_: Throwable) {
             null
         }
@@ -37,7 +34,6 @@ class Marker {
      * @param tag the tag for the marker
      */
     fun setTag(tag: String) {
-        gmsMarker?.tag = tag
         hmsMarker?.tag = tag
     }
 
@@ -47,7 +43,7 @@ class Marker {
      */
     fun isVisible(): Boolean? {
         return try {
-            gmsMarker?.isVisible ?: hmsMarker?.isVisible
+            hmsMarker?.isVisible
         } catch (_: Throwable) {
             null
         }
@@ -58,7 +54,6 @@ class Marker {
      * @param visible visibility of the marker
      */
     fun setVisible(visible: Boolean) {
-        gmsMarker?.isVisible = visible
         hmsMarker?.isVisible = visible
     }
 
@@ -68,7 +63,7 @@ class Marker {
      */
     fun getPosition(): LatLng? {
         return try {
-            gmsMarker?.position?.toLatLng() ?: hmsMarker?.position?.toLatLng()
+            hmsMarker?.position?.toLatLng()
         } catch (_: Throwable) {
             null
         }
@@ -81,13 +76,7 @@ class Marker {
      * @param theme *themeResId* parameter of [bitmapDescriptorFromVectorHMS]
      */
     fun setIcon(context: Context, @DrawableRes icon: Int, @StyleRes theme: Int = -1) {
-        gmsMarker?.setIcon(
-            bitmapDescriptorFromVectorGMS(
-                context = context,
-                vectorResId = icon,
-                themeResId = theme
-            )
-        )
+
 
         hmsMarker?.setIcon(
             bitmapDescriptorFromVectorHMS(
@@ -103,7 +92,6 @@ class Marker {
      * @param bitmapDescriptor [BitmapDescriptor] used for the icon
      */
     fun setIcon(bitmapDescriptor: BitmapDescriptor) {
-        gmsMarker?.setIcon(bitmapDescriptor.gmsBitmapDescriptor)
         hmsMarker?.setIcon(bitmapDescriptor.hmsBitmapDescriptor)
     }
 
@@ -122,7 +110,6 @@ class Marker {
      * Removes [hmsMarker] from the map
      */
     fun remove() {
-        gmsMarker?.remove()
         hmsMarker?.remove()
     }
 
@@ -132,7 +119,7 @@ class Marker {
      */
     fun getTitle(): String? {
         return try {
-            gmsMarker?.title ?: hmsMarker?.title
+            hmsMarker?.title
         } catch (_: Throwable) {
             null
         }
@@ -143,11 +130,9 @@ class Marker {
      * @return the snippet of [hmsMarker] or null if it does not exist
      */
     fun getSnippet(): String? {
-        return gmsMarker?.snippet ?: hmsMarker?.snippet
+        return hmsMarker?.snippet
     }
 }
-
-fun MarkerGMS.toMarker() = Marker().also { it.gmsMarker = this }
 
 /**
  * Creates a [Marker] from this marker
