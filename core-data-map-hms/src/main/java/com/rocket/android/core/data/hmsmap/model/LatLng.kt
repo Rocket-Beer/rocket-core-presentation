@@ -1,4 +1,4 @@
-package com.rocket.android.core.data.map.model
+package com.rocket.android.core.data.hmsmap.model
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

@@ -1,7 +1,7 @@
-package com.rocket.android.core.data.map.model
+package com.rocket.android.core.data.hmsmap.model
 
 import android.content.Context
-import com.rocket.android.core.data.map.extensions.isHmsCoreVersionAvailable
+import com.rocket.android.core.data.hmsmap.extensions.isHmsCoreVersionAvailable
 import com.huawei.hms.maps.model.PolygonOptions as HmsPolygonOptions
 
 /**

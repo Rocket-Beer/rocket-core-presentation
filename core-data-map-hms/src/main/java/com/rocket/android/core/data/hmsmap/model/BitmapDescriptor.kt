@@ -1,4 +1,4 @@
-package com.rocket.android.core.data.map.model
+package com.rocket.android.core.data.hmsmap.model
 
 import android.graphics.Bitmap
 import com.huawei.hms.maps.model.BitmapDescriptor as HmsBitmapDescriptor

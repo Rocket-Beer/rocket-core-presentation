@@ -1,11 +1,11 @@
-package com.rocket.android.core.data.map.model
+package com.rocket.android.core.data.hmsmap.model
 
 import android.content.Context
 import androidx.annotation.DrawableRes
 import androidx.annotation.StyleRes
-import com.rocket.android.core.data.map.extensions.bitmapDescriptorFromUrl
-import com.rocket.android.core.data.map.extensions.bitmapDescriptorFromVectorHMS
-import com.rocket.android.core.data.map.extensions.isHmsCoreVersionAvailable
+import com.rocket.android.core.data.hmsmap.extensions.bitmapDescriptorFromUrl
+import com.rocket.android.core.data.hmsmap.extensions.bitmapDescriptorFromVectorHMS
+import com.rocket.android.core.data.hmsmap.extensions.isHmsCoreVersionAvailable
 import com.huawei.hms.maps.model.MarkerOptions as MarkerOptionsHMS
 
 /**

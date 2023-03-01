@@ -1,4 +1,4 @@
-package com.rocket.android.core.data.map
+package com.rocket.android.core.data.hmsmap
 
 import android.Manifest
 import android.content.Context
@@ -10,9 +10,8 @@ import androidx.annotation.RequiresPermission
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.huawei.hms.maps.HuaweiMap
 import com.huawei.hms.maps.HuaweiMapOptions
-import com.rocket.android.core.data.map.extensions.isHmsCoreVersionAvailable
-import com.rocket.android.core.data.map.model.*
-import com.rocket.android.core.data.map.model.Marker
+import com.rocket.android.core.data.hmsmap.extensions.isHmsCoreVersionAvailable
+import com.rocket.android.core.data.hmsmap.model.*
 import com.huawei.hms.maps.MapView as HmsMapView
 import com.huawei.hms.maps.model.MapStyleOptions as HmsMapStyleOptions
 import com.huawei.hms.maps.model.Marker as HmsMarker
@@ -30,7 +29,7 @@ import com.huawei.hms.maps.model.Marker as HmsMarker
  * @param attributeSet [AttributeSet] object to be passed to the layout
  * @param defStyleAttr style to be applied to the layout
  */
-class CoreMapView @JvmOverloads constructor(
+class CoreHmsMapView @JvmOverloads constructor(
     context: Context,
     attributeSet: AttributeSet? = null,
     defStyleAttr: Int = 0,
@@ -45,7 +44,7 @@ class CoreMapView @JvmOverloads constructor(
             hmsMapView = findViewById(R.id.hms_map_view) ?: View.inflate(
                 context,
                 R.layout.core_map_hms,
-                this@CoreMapView
+                this@CoreHmsMapView
             ).findViewById(R.id.hms_map_view)
         }
     }

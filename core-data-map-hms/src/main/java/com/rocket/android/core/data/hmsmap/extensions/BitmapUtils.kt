@@ -1,4 +1,4 @@
-package com.rocket.android.core.data.map.extensions
+package com.rocket.android.core.data.hmsmap.extensions
 
 import android.content.Context
 import android.content.pm.PackageInfo
@@ -13,8 +13,8 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.ContextCompat
 import androidx.core.content.pm.PackageInfoCompat
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
-import com.rocket.android.core.data.map.model.BitmapDescriptor
-import com.rocket.android.core.data.map.model.toBitmapDescription
+import com.rocket.android.core.data.hmsmap.model.BitmapDescriptor
+import com.rocket.android.core.data.hmsmap.model.toBitmapDescription
 import java.net.URL
 import com.huawei.hms.maps.model.BitmapDescriptor as BitmapDescriptorHMS
 import com.huawei.hms.maps.model.BitmapDescriptorFactory as BitmapDescriptorFactoryHMS
