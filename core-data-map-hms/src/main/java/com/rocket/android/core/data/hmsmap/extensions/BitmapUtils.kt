@@ -19,7 +19,6 @@ import java.net.URL
 import com.huawei.hms.maps.model.BitmapDescriptor as BitmapDescriptorHMS
 import com.huawei.hms.maps.model.BitmapDescriptorFactory as BitmapDescriptorFactoryHMS
 
-
 /**
  * Creates a [BitmapDescriptorHMS] from a [VectorDrawableCompat]
  * @param context [Context] to access drawable and style resources

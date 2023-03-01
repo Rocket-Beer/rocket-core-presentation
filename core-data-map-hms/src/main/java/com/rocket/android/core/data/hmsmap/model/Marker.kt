@@ -77,7 +77,6 @@ class Marker {
      */
     fun setIcon(context: Context, @DrawableRes icon: Int, @StyleRes theme: Int = -1) {
 
-
         hmsMarker?.setIcon(
             bitmapDescriptorFromVectorHMS(
                 context = context,

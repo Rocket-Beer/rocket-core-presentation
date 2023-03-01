@@ -11,7 +11,14 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.huawei.hms.maps.HuaweiMap
 import com.huawei.hms.maps.HuaweiMapOptions
 import com.rocket.android.core.data.hmsmap.extensions.isHmsCoreVersionAvailable
-import com.rocket.android.core.data.hmsmap.model.*
+import com.rocket.android.core.data.hmsmap.model.LatLng
+import com.rocket.android.core.data.hmsmap.model.Marker
+import com.rocket.android.core.data.hmsmap.model.MarkerOptions
+import com.rocket.android.core.data.hmsmap.model.Polygon
+import com.rocket.android.core.data.hmsmap.model.PolygonOptions
+import com.rocket.android.core.data.hmsmap.model.toLatLng
+import com.rocket.android.core.data.hmsmap.model.toMarker
+import com.rocket.android.core.data.hmsmap.model.toPolygon
 import com.huawei.hms.maps.MapView as HmsMapView
 import com.huawei.hms.maps.model.MapStyleOptions as HmsMapStyleOptions
 import com.huawei.hms.maps.model.Marker as HmsMarker
@@ -180,8 +187,7 @@ class CoreHmsMapView @JvmOverloads constructor(
      * Gets the status of my-location layer
      * @return true if the my-location layer is enabled; false otherwise
      */
-    fun isMyLocationEnabled()
-            : Boolean
+    fun isMyLocationEnabled(): Boolean
     ? {
         return hmsMap?.isMyLocationEnabled
     }
@@ -288,7 +294,8 @@ class CoreHmsMapView @JvmOverloads constructor(
      * Sets the action to be performed (contained in [clickListener]) when clicking on a marker located in [hmsMap]
      */
     fun onMarkerClickListener(
-        clickListener: ((Marker)
+        clickListener: (
+            (Marker)
         -> Unit
         )
     ) {
@@ -330,8 +337,7 @@ class CoreHmsMapView @JvmOverloads constructor(
      * operation
      * @param polygon [PolygonOptions] object which defines how to render the polygon
      */
-    fun addPolygon(polygon: PolygonOptions)
-            : Polygon
+    fun addPolygon(polygon: PolygonOptions): Polygon
     ? {
         if (hmsMap != null) {
             return hmsMap?.addPolygon(polygon.hmsPolygonOptions)?.toPolygon()
@@ -352,8 +358,7 @@ class CoreHmsMapView @JvmOverloads constructor(
     /**
      * Gets [hmsMap]'s camera zoom level near the center of the screen
      */
-    fun getCameraZoom()
-            : Float
+    fun getCameraZoom(): Float
     ? {
         return hmsMap?.cameraPosition?.zoom
     }
