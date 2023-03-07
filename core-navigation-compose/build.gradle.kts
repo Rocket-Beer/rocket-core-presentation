@@ -37,8 +37,7 @@ android {
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.7.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:${Versions.KOTLIN}")
     implementation("androidx.navigation:navigation-runtime-ktx:${Versions.NAV}")
 
     testImplementation("junit:junit:4.13.2")
