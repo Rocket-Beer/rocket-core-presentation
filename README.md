@@ -29,7 +29,7 @@ Can be manage coroutines and jobs with this package.
 
 ### Implement Rocket core-viewmodel package
 ~~~
-implementation "com.rocket.android.core:core-viewmodel:0.0.1-alpha"
+implementation "com.rocket.android.core:core-viewmodel:0.0.2-beta"
 ~~~
 
 ### BaseViewModel
@@ -58,7 +58,7 @@ Core Navigation package ease to use Jetpack navigation using an especific class.
 
 ### Implement Rocket core-navigation package
 ~~~
-implementation "com.rocket.android.core:core-navigation:0.0.1-alpha"
+implementation "com.rocket.android.core:core-navigation:0.0.2-beta"
 ~~~
 
 ### Clase Navigator
@@ -95,7 +95,7 @@ Core data Map package ease to use Google maps and Petal maps (Huawei, soported u
 
 ### Implement Rocket core-data-map package
 ~~~
-implementation "com.rocket.android.core:core-data-map:0.0.1-alpha02"
+implementation "com.rocket.android.core:core-data-map:0.0.2-beta"
 ~~~
 
 ### CoreMapView
@@ -106,7 +106,25 @@ CoreMapView is a custom view component which can config some maps data:
 * Location
 * Style
 
+## Core data Map GMS user manual
+Core data Map package ease to use Google maps.
+
+### Implement Rocket core-data-map-gms package
+~~~
+implementation "com.rocket.android.core:core-data-map-gms:0.0.2-beta"
+~~~
+
+## Core data Map HMS user manual
+Core data Map package ease to use Petal maps.
+
+### Implement Rocket core-data-map-hms package
+~~~
+implementation "com.rocket.android.core:core-data-map-hms:0.0.1-alpha01"
+~~~
+
 ## Packages
-core-viewmodel --> 0.0.1-alpha  
-core-navigation --> 0.0.1-alpha  
-core-data-map --> 0.0.1-alpha02  
+core-viewmodel --> 0.0.2-beta  
+core-navigation --> 0.0.2-beta
+core-data-map --> 0.0.2-beta
+core-data-map-gms --> 0.0.2-beta
+core-data-map-hms --> 0.0.1-alpha01
