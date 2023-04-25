@@ -9,6 +9,15 @@ class NavigatorManager {
         navController = controller
     }
 
+    @Throws(Exception::class)
+    fun getController(): NavHostController {
+        navController?.let {
+            return it
+        } ?: run {
+            throw Exception("Not setted navController in NavigatorManager yet")
+        }
+    }
+
     fun goBack() {
         navController?.popBackStack()
     }
