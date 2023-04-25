@@ -87,7 +87,6 @@ fun bitmapDescriptorFromVector(
     )?.toBitmapDescription()
 }
 
-
 /**
  * Creates a [BitmapDescriptor] from a given url which holds a [Bitmap]. The bitmap will be created
  * from the Google Maps Services library

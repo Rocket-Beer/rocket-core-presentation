@@ -19,7 +19,6 @@ fun MarkerGMS.toMarker() = Marker().also { it.gmsMarker = this }
  */
 fun GmsPolygon.toPolygon() = Polygon().also { it.gmsPolygon = this }
 
-
 /**
  * Creates a [LatLng] from a [LatLngGMS]
  * @return the [LatLng] created
