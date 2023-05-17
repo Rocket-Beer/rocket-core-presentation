@@ -1,5 +1,3 @@
-package com.rocket.android.core.utils
-
 import android.util.Patterns
 import java.text.NumberFormat
 import java.util.Currency
@@ -7,38 +5,76 @@ import java.util.Locale
 import java.util.regex.Pattern
 
 /**
+String Extensions
+This Kotlin class provides useful extension functions for working with strings.
+
+Functions
+capitalizeFirstLetter()
+Capitalizes the first letter of a string.
+
+capitalize()
+Capitalizes all letters in a string.
+
+removeLineBreaks()
+Removes all line breaks from a string.
+
+toAndroidVersionNumber()
+Converts a string representation of an Android version number (e.g., "10.2.3") to an integer.
+
+chunked(chunkSize: Int)
+Splits a string into chunks of the specified size. The last chunk may be smaller than the specified size.
+
+replaceIgnoreCase(old: String, new: String)
+Replaces all occurrences of a string with another string, ignoring case.
+
+substringSafe(startIndex: Int, endIndex: Int)
+Returns a substring of a string starting at the specified index and going up to, but not including, the end index. If the end index is greater than the length of the string, it will be truncated to the end of the string.
+
+formatAsCurrency(locale: Locale, currencyCode: String)
+Formats a string as a currency value using the specified locale and currency code.
+
+toBooleanOrNull()
+Converts a string to a Boolean value or returns null if the string cannot be converted. Returns true if the string is "true", false if the string is "false", or null otherwise.
+
+toIntegerOrNull()
+Converts a string to an Integer value or returns null if the string cannot be converted.
+
+isValidEmail()
+Validates if a string is a valid email address using a regular expression pattern.
+
+isValidPhoneNumber()
+Validates if a string is a valid phone number using a regular expression pattern.
+
+isValidUrl()
+Validates if a string is a valid URL using a regular expression pattern.
+
+isValidDate()
+Validates if a string is a valid date in the format "yyyy-MM-dd" using a regular expression pattern.*/
+
+/**
  * Capitalizes the first letter of this string.
  */
 fun String.capitalizeFirstLetter(): String =
-    this.substring(0, 1).toUpperCase(Locale.getDefault()) + this.substring(1).toLowerCase(
-        Locale.getDefault()
-    )
-
-/**
- * Removes accents from this CharSequence.
- */
-/*fun CharSequence.unaccent(): String {
-    val temp = Normalizer.normalize(this, Normalizer.Form.NFD)
-    return REGEX_UNACCENT.replace(temp, "")
-}*/
+    this.substring(0, 1).toUpperCase(Locale.getDefault()) + this.substring(1)
+        .toLowerCase(Locale.getDefault())
 
 /**
  * Capitalizes this string.
  */
-fun String.capitalize() =
+fun String.capitalize(): String =
     replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
 
 /**
  * Removes all line breaks from this string.
  */
-fun String.removeLineBreaks(): String {
-    return replace("\r\n", "").replace("\n", "")
-}
+fun String.removeLineBreaks(): String =
+    replace("\r\n", "").replace("\n", "")
 
 /**
  * Converts this string to an Android version number.
  */
-fun String.toAndroidVersionNumber(): Int = this.replace(".", "").toInt()
+fun String.toAndroidVersionNumber(): Int =
+    replace(".", "").toInt()
 
 /**
  * Splits this string into chunks of the specified size.
@@ -47,7 +83,8 @@ fun String.toAndroidVersionNumber(): Int = this.replace(".", "").toInt()
  * @param chunkSize The size of each chunk.
  * @return A list of string chunks.
  */
-fun String.chunked(chunkSize: Int): List<CharSequence> = chunked(chunkSize) { it }
+fun String.chunked(chunkSize: Int): List<CharSequence> =
+    chunked(chunkSize) { it }
 
 /**
  * Replaces all occurrences of a string with another string, ignoring case.
@@ -56,9 +93,8 @@ fun String.chunked(chunkSize: Int): List<CharSequence> = chunked(chunkSize) { it
  * @param new The new string to replace it with.
  * @return The string with all occurrences of the old string replaced with the new string.
  */
-fun String.replaceIgnoreCase(old: String, new: String): String {
-    return "(?i)$old".toRegex().replace(this, new)
-}
+fun String.replaceIgnoreCase(old: String, new: String): String =
+    "(?i)$old".toRegex().replace(this, new)
 
 /**
  * Returns a substring of this string starting at the specified index and going up to, but not including,
@@ -95,7 +131,7 @@ fun String.formatAsCurrency(locale: Locale, currencyCode: String): String {
  */
 fun String?.toBooleanOrNull(): Boolean? {
     if (this == null) return null
-    return when (this.toLowerCase()) {
+    return when (this.lowercase(Locale.ROOT)) {
         "true" -> true
         "false" -> false
         else -> null
@@ -104,204 +140,66 @@ fun String?.toBooleanOrNull(): Boolean? {
 
 /**
  * Converts the given string to an Integer value or returns null if the string cannot be converted.
- * @return The Integer value of the string, or `null` if the string cannot be converted to an Integer.
+ * @return The Integer value of the
+string or null if it cannot be converted.
  */
-fun String?.toIntOrNull(): Int? {
-    if (this == null) return null
+fun String?.toIntegerOrNull(): Int? {
     return try {
-        Integer.parseInt(this)
+        this?.toInt()
     } catch (e: NumberFormatException) {
         null
     }
 }
 
 /**
- * Converts the given string to a Long value or returns null if the string cannot be converted.
- * @return The Long value of the string, or `null` if the string cannot be converted to a Long.
- */
-fun String?.toLongOrNull(): Long? {
-    if (this == null) return null
-    return try {
-        java.lang.Long.parseLong(this)
-    } catch (e: NumberFormatException) {
-        null
-    }
-}
-
-/**
- * Converts the given string to a Float value or returns null if the string cannot be converted.
- * @return The Float value of the string, or `null` if the string cannot be converted to a Float.
- */
-fun String?.toFloatOrNull(): Float? {
-    if (this == null) return null
-    return try {
-        java.lang.Float.parseFloat(this)
-    } catch (e: NumberFormatException) {
-        null
-    }
-}
-
-/**
- * Converts the given string to a Double value or returns null if the string cannot be converted.
- * @return The Double value of the string, or `null` if the string cannot be converted to a Double.
- */
-fun String?.toDoubleOrNull(): Double? {
-    if (this == null) return null
-    return try {
-        java.lang.Double.parseDouble(this)
-    } catch (e: NumberFormatException) {
-        null
-    }
-}
-
-/**
- * Returns a new string with the first character of each word in the original string capitalized.
- * @return The capitalized string.
- */
-fun String.capitalizeWords(): String = this.split(" ").joinToString(" ") { it.capitalize() }
-
-/**
- * Returns the first word in the given string or `null` if there is no word.
- * @return The first word in the string, or `null` if the string has no words.
- */
-fun String?.firstWordOrNull(): String? {
-    if (this == null) return null
-    val trimmed = this.trim()
-    val firstSpaceIndex = trimmed.indexOf(" ")
-    return if (firstSpaceIndex == -1) trimmed else trimmed.substring(0, firstSpaceIndex)
-}
-
-/**
- * Truncates the string to a maximum length, appending the specified trailing string if the string
- * is longer than the maximum length. Returns null if the string is null.
- */
-fun String?.truncate(maxLength: Int, trailing: String = "..."): String? {
-    if (this == null) return null
-    if (this.length <= maxLength) return this
-    return this.substring(0, maxLength - trailing.length) + trailing
-}
-
-// STRING VALIDATIONS
-
-/**
- * Extension function to check if a string is a valid email address.
- *
+ * Validates if this string is a valid email address using a regular expression pattern.
  * @return true if the string is a valid email address, false otherwise.
  */
+
+
 fun String.isValidEmail(): Boolean {
     val pattern = Pattern.compile(
-        "^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]{1}|[\\w-]{2,}))@" +
-            "((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\." +
-            "([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.)|" +
-            "(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$"
+        "^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]{1}|[\\w-]{2,}))@"
+                + "((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\."
+                + "([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.)|"
+                + "(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$"
     )
-    return pattern.matcher(this).matches()
+    val matcher = pattern.matcher(this)
+    return matcher.matches()
 }
 
 /**
- * Extension function to check if a string is a valid phone number.
- *
+ * Validates if this string is a valid phone number using a regular expression pattern.
  * @return true if the string is a valid phone number, false otherwise.
  */
 fun String.isValidPhoneNumber(): Boolean {
-    val pattern = Pattern.compile("^[+]?[0-9]{10,13}\$")
-    return pattern.matcher(this).matches()
+    val pattern = Pattern.compile(
+        "^[+]?[0-9]{10,13}$"
+    )
+    val matcher = pattern.matcher(this)
+    return matcher.matches()
 }
 
 /**
- * Extension function to check if a string is a valid URL.
- *
- * @return true if the string is a valid URL, false otherwise.
+ * Validates if this string is a valid URL using a regular expression pattern.
+ *@return true if the string is a valid URL, false otherwise.
  */
 fun String.isValidUrl(): Boolean {
-    val pattern = Pattern.compile("^(http://www\\.|https://www\\.|http://|https://)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?\$")
-    return pattern.matcher(this).matches()
+    val pattern = Patterns.WEB_URL
+    val matcher = pattern.matcher(this)
+    return matcher.matches()
 }
 
 /**
- * Returns true if the string is a valid URL, false otherwise.
- */
-fun String?.validateUrl(): Boolean {
-    if (this == null) return false
-    val regex = "^(http(s)?://)?([\\w-]+\\.)+[\\w-]+(/[\\w- ;,./?%&=]*)?$"
-    return regex.toRegex().matches(this)
-}
 
-/**
- * Extension function to check if a string is a valid date in the format yyyy-MM-dd.
- *
- * @return true if the string is a valid date in the format yyyy-MM-dd, false otherwise.
+Validates if this string is a valid date in the format yyyy-MM-dd using a regular expression pattern.
+@return true if the string is a valid date, false otherwise.
  */
 fun String.isValidDate(): Boolean {
-    val pattern = Pattern.compile("^\\d{4}-\\d{2}-\\d{2}\$")
-    return pattern.matcher(this).matches()
+    val pattern = Pattern.compile(
+        "^(?:(?:19|20)[0-9]{2})-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-"
+                + "(?:29|30)|(?:0[13578]|1[02])-31)$"
+    )
+    val matcher = pattern.matcher(this)
+    return matcher.matches()
 }
-
-const val DNI_LENGTH = 9
-val DNI_LETTER_LIST = arrayOf('T', 'R', 'W', 'A', 'G', 'M', 'Y', 'F', 'P', 'D', 'X', 'B', 'N', 'J', 'Z', 'S', 'Q', 'V', 'H', 'L', 'C', 'K', 'E')
-
-/**
- * Checks whether the String is a valid NIE (Foreigner Identification Number).
- * @return true if the String is a valid NIE, false otherwise.
- */
-fun String.isValidNie(): Boolean {
-    var nie = this
-    var resultado = false
-    if (nie.length == 9 && (
-        nie.startsWith("x") || nie.startsWith("X") ||
-            nie.startsWith("y") || nie.startsWith("Y") ||
-            nie.startsWith("z") || nie.startsWith("Z")
-        )
-    ) {
-
-        if (nie.startsWith("x") || nie.startsWith("X")) {
-            nie = "0" + nie.substring(1)
-        } else if (nie.startsWith("y") || nie.startsWith("Y")) {
-            nie = "1" + nie.substring(1)
-        } else if (nie.startsWith("z") || nie.startsWith("Z")) {
-            nie = "2" + nie.substring(1)
-        }
-
-        // TODO if (nie.isValidDni())
-        if (false) {
-            resultado = true
-        }
-    }
-    return resultado
-}
-
-/**
- * Checks whether the String is a valid NIS (Social Security Number).
- * @return true if the String is a valid NIS, false otherwise.
- */
-fun String.isValidNis(): Boolean {
-    var resultado = false
-    if (this.length in 9..10) {
-        resultado = true
-
-        var index = 0
-        while (index < this.length && resultado) {
-            if (!Character.isDigit(this[index])) {
-                resultado = false
-            }
-            index++
-        }
-    }
-    return resultado
-}
-
-/**
- * Validates a phone number String by checking if it matches the PHONE pattern.
- * @return the validated phone number String if it matches the pattern, an empty String otherwise.
- */
-fun String?.validatePhone(): String =
-    if (!this.isNullOrEmpty() && Patterns.PHONE.matcher(this).matches())
-        this.substring(this.length.minus(9))
-    else
-        ""
-
-/**
- * Checks whether the String represents a PDF document by comparing its
-**/
-
-fun String.validateEmailAddress() = Patterns.EMAIL_ADDRESS.matcher(this).matches()
