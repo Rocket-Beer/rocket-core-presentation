@@ -1,3 +1,5 @@
+package com.rocket.android.core.utils
+
 import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -17,7 +19,6 @@ import android.view.inputmethod.InputMethodManager
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
-
 
 /**
  * # Context Extensions
@@ -45,8 +46,6 @@ context.openBrowser(uri)
 // Vibrate the device
 context.vibratePhone()
 
-
-
 // And more...
 Extension Functions
 The following extension functions are available:
@@ -56,7 +55,6 @@ copyToClipboard(label: String = "label", text: CharSequence): Copies the given t
 openBrowser(uri: Uri): Opens the browser to the given URI.
 
 vibratePhone(): Vibrates the device for a short duration.
-
 
 getTintColor(colorId: Int): ColorStateList: Returns a ColorStateList representing a single color.
 
@@ -124,7 +122,6 @@ fun Context.vibratePhone() {
         vibrator.vibrate(200)
     }
 }
-
 
 /**
  * Returns a ColorStateList that represents a single color, which can be used to apply a tint to visual

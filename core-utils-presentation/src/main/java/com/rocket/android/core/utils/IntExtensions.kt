@@ -1,3 +1,5 @@
+package com.rocket.android.core.utils
+
 /**
  *
 # Integer Extensions

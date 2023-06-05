@@ -1,3 +1,5 @@
+package com.rocket.android.core.utils
+
 import android.util.Patterns
 import java.text.NumberFormat
 import java.util.Currency
@@ -156,13 +158,12 @@ fun String?.toIntegerOrNull(): Int? {
  * @return true if the string is a valid email address, false otherwise.
  */
 
-
 fun String.isValidEmail(): Boolean {
     val pattern = Pattern.compile(
-        "^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]{1}|[\\w-]{2,}))@"
-                + "((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\."
-                + "([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.)|"
-                + "(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$"
+        "^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]{1}|[\\w-]{2,}))@" +
+            "((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\." +
+            "([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.)|" +
+            "(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$"
     )
     val matcher = pattern.matcher(this)
     return matcher.matches()
@@ -197,8 +198,8 @@ Validates if this string is a valid date in the format yyyy-MM-dd using a regula
  */
 fun String.isValidDate(): Boolean {
     val pattern = Pattern.compile(
-        "^(?:(?:19|20)[0-9]{2})-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-"
-                + "(?:29|30)|(?:0[13578]|1[02])-31)$"
+        "^(?:(?:19|20)[0-9]{2})-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-" +
+            "(?:29|30)|(?:0[13578]|1[02])-31)$"
     )
     val matcher = pattern.matcher(this)
     return matcher.matches()
