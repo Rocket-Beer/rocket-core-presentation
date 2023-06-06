@@ -5,5 +5,6 @@ include(
     ":core-data-map",
     ":core-data-map-gms",
     ":sample-app",
-    ":core-navigation-compose"
+    ":core-navigation-compose",
+    ":core-utils-presentation"
 )
