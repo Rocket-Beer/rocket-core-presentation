@@ -70,6 +70,6 @@ fun checkXposed(context: Context): Boolean {
 /**
  * This function is used to validate the entered data by using regular expressions
  */
-private fun isValidEmailString(emailRegex: String, emailString: String): Boolean {
+fun isValidEmailString(emailRegex: String, emailString: String): Boolean {
     return emailString.isNotEmpty() && Pattern.compile(emailRegex).matcher(emailString).matches()
 }
