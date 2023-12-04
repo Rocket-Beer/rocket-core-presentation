@@ -24,22 +24,22 @@ fun isRoot(): Boolean {
  * This function is used to check whether an application is running on an emulator.
  */
 fun isEmulator(): Boolean {
-    return (Build.FINGERPRINT.startsWith("generic")
-            || Build.FINGERPRINT.startsWith("unknown")
-            || Build.MODEL.contains("google_sdk")
-            || Build.MODEL.contains("Emulator")
-            || Build.MODEL.contains("Android SDK built for x86")
-            || Build.MANUFACTURER.contains("Genymotion")
-            || Build.BRAND.startsWith("generic")
-            && Build.DEVICE.startsWith("generic")
-            || "google_sdk" == Build.PRODUCT)
+    return (Build.FINGERPRINT.startsWith("generic") || Build.FINGERPRINT.startsWith("unknown") || Build.MODEL.contains(
+        "google_sdk"
+    ) || Build.MODEL.contains("Emulator") || Build.MODEL.contains("Android SDK built for x86") || Build.MANUFACTURER.contains(
+        "Genymotion"
+    ) || Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic") || "google_sdk" == Build.PRODUCT)
 }
 
 /**
  * This function is used to check if an application is in debugging
  */
 fun isDownloadedFromStore(playStoreAppId: String, context: Context): Boolean {
-    val installer = context.packageManager.getInstallerPackageName(context.packageName)
+    val installer = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        context.packageManager.getInstallSourceInfo(context.packageName).installingPackageName
+    } else {
+        context.packageManager.getInstallerPackageName(context.packageName)
+    }
     return installer != null && installer.startsWith(playStoreAppId)
 }
 
@@ -70,6 +70,6 @@ fun checkXposed(context: Context): Boolean {
 /**
  * This function is used to validate the entered data by using regular expressions
  */
-fun isValidEmailString(emailRegex: String, emailString: String): Boolean {
-    return emailString.isNotEmpty() && Pattern.compile(emailRegex).matcher(emailString).matches()
+fun isValidRegex(regex: String, text: String): Boolean {
+    return text.isNotEmpty() && Pattern.compile(regex).matcher(text).matches()
 }
