@@ -45,4 +45,6 @@ dependencies {
 
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+    implementation("androidx.security:security-crypto:1.1.0-alpha03")
+    implementation("androidx.core:core-ktx:1.6.0")
 }

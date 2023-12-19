@@ -1,8 +1,14 @@
 import android.content.Context
 import android.os.Build
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
 import dalvik.system.DexClassLoader
 import java.io.File
+import java.security.MessageDigest
 import java.util.regex.Pattern
+import javax.crypto.Cipher
+import javax.crypto.KeyGenerator
+import javax.crypto.SecretKey
 
 /**
  * This function is used to check if an application is rooted.
@@ -68,4 +74,61 @@ fun checkXposed(context: Context): Boolean {
  */
 fun isValidRegex(regex: String, text: String): Boolean {
     return text.isNotEmpty() && Pattern.compile(regex).matcher(text).matches()
+}
+
+/**
+ * This function is used to store data securely using Secure Shared Preferences.
+ * */
+fun storeSecureSharedPreferences(context: Context, key: String, value: String, fileName: String) {
+    val masterKey = MasterKey.Builder(context)
+        .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+        .build()
+
+    val sharedPreferences = EncryptedSharedPreferences.create(
+        context,
+        fileName,
+        masterKey,
+        EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+    )
+
+    val editor = sharedPreferences.edit()
+    editor.putString(key, value)
+    editor.apply()
+}
+
+/**
+ * This function is used to generate a secret key, which can be used for data encryption and decryption.
+ */
+fun generateSecretKey(): SecretKey {
+    val keyGenerator = KeyGenerator.getInstance("AES")
+    keyGenerator.init(256)
+    return keyGenerator.generateKey()
+}
+
+/**
+ * This function is used to encrypt data using a secret key and a transformation method.
+ */
+/*TODO Revisar funciones encrypt y decrypt*/
+fun encryptData(data: ByteArray, transformation: String): ByteArray {
+    val cipher = Cipher.getInstance(transformation)
+    cipher.init(Cipher.ENCRYPT_MODE, generateSecretKey())
+    return cipher.doFinal(data)
+}
+
+/**
+ * This function is used to decrypt data using a secret key and a transformation method.
+ */
+fun decryptData(encryptedData: ByteArray, transformation: String): ByteArray {
+    val cipher = Cipher.getInstance(transformation)
+    cipher.init(Cipher.DECRYPT_MODE, generateSecretKey())
+    return cipher.doFinal(encryptedData)
+}
+
+/**
+ * Generates an SHA-256 hash for a byte array.
+ */
+fun generateHash(data: ByteArray): ByteArray {
+    val digest = MessageDigest.getInstance("SHA-256")
+    return digest.digest(data)
 }
