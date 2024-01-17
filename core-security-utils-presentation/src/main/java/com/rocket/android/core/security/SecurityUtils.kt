@@ -1,9 +1,12 @@
 import android.app.Activity
 import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Build
+import android.util.Log
 import android.view.WindowManager
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import com.rocket.android.core.security.SecurityConstants
 import dalvik.system.DexClassLoader
 import java.io.File
 import java.security.MessageDigest
@@ -34,19 +37,28 @@ fun isRoot(): Boolean {
  * @return Boolean true if is emulated false if not.
  */
 fun isEmulator(): Boolean {
-    return (Build.FINGERPRINT.startsWith("generic") || Build.FINGERPRINT.startsWith("unknown") || Build.MODEL.contains(
-        "google_sdk"
-    ) || Build.MODEL.contains("Emulator") || Build.MODEL.contains("Android SDK built for x86") || Build.MANUFACTURER.contains(
-        "Genymotion"
-    ) || Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic") || "google_sdk" == Build.PRODUCT || (Build.HARDWARE == "goldfish" && Build.BOOTLOADER == "unknown") || (Build.BOOTLOADER == "unknown" && Build.BRAND.startsWith(
-        "generic"
-    )) || (Build.DEVICE.startsWith("generic") && Build.PRODUCT == "sdk"))
+    return (Build.FINGERPRINT.startsWith("generic", true) || Build.FINGERPRINT.startsWith(
+        "unknown",
+        true
+    ) || Build.MODEL.contains(
+        "google_sdk", true
+    ) || Build.MODEL.contains("Emulator", true) || Build.MODEL.contains(
+        "Android SDK built for x86",
+        true
+    ) || Build.MANUFACTURER.contains(
+        "Genymotion", true
+    ) || Build.BRAND.startsWith("generic", true) && Build.DEVICE.startsWith(
+        "generic",
+        true
+    ) || "google_sdk" == Build.PRODUCT || (Build.HARDWARE == "goldfish" && Build.BOOTLOADER == "unknown") || (Build.BOOTLOADER == "unknown" && Build.BRAND.startsWith(
+        "generic", true
+    )) || (Build.DEVICE.startsWith("generic", true) && Build.PRODUCT == "sdk"))
 }
 
 /**
  * This function is used to check if an application is in debugging
- * @param playStoreAppId the expected installer or source package
- * @param context
+ * @param playStoreAppId the expected installer or source package.
+ * @param context of the application for the packageManager.
  * @return Boolean true if app is downloaded from Store false if not.
  */
 fun isDownloadedFromStore(playStoreAppId: String, context: Context): Boolean {
@@ -131,13 +143,26 @@ fun storeSecureSharedPreferences(context: Context, key: String, value: String, f
 }
 
 /**
+ * This function is used to detect if the origin of the package is potencially dangerous compared
+ * to a list of dangerous origins.
+ * @param context of the application for the packageManager.
+ * @param additionalPotentiallyDangerousApps list of dangerous origin.
+ * @return Boolean true if is the origin is dangerous false if not.
+ * */
+fun detectPotentiallyDangerousOrigin(context:Context, additionalPotentiallyDangerousApps: List<String> = emptyList()): Boolean {
+    val packages = SecurityConstants.knownDangerousAppsPackages.toMutableList()
+    packages.addAll(additionalPotentiallyDangerousApps)
+    return isAnyPackageFromListInstalled(context,packages)
+}
+
+/**
  * This function is used to encrypt or decrypt data using a secret key and a transformation method.
  * @param data to encrypt/decrypt
  * @param transformation  specifies the cryptographic transformation to be used .
  * @param mode for the cipher, default value is Cipher.ENCRYPT_MODE. Other possible value is Cipher.DECRYPT_MODE
  * @return ByteArray of the encrypted/decrypted data
  */
-fun encryptData(
+fun cryptData(
     data: ByteArray,
     transformation: String,
     mode: Int = Cipher.ENCRYPT_MODE
@@ -164,4 +189,30 @@ private fun generateSecretKey(): SecretKey {
     val keyGenerator = KeyGenerator.getInstance("AES")
     keyGenerator.init(256)
     return keyGenerator.generateKey()
+}
+
+/**
+ * This function is used to check from a list of packages if it is installed in the device.
+ * @param context of the application for the packageManager.
+ * @param packages list of packages.
+ * @return Boolean true if it is installed false if not.
+ */
+private fun isAnyPackageFromListInstalled(context: Context, packages: List<String>): Boolean {
+    var result = false
+
+    val packageManager: PackageManager = context.packageManager
+
+    for (packageName in packages) {
+        try {
+            packageManager.getPackageInfo(packageName, 0)
+            Log.e(
+                "isAnyPackageInstalled",
+                "$packageName ROOT management app detected!"
+            )
+            result = true
+        } catch (exception: PackageManager.NameNotFoundException) {
+            // Exception thrown, package is not installed into the system
+        }
+    }
+    return result
 }
