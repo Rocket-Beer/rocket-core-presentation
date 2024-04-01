@@ -1,4 +1,4 @@
-package com.rocket.android.core.viewmodel
+package com.rocket.android.core.viewmodel.compose
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
