@@ -42,7 +42,11 @@ fun isEmulator(): Boolean {
         true
     ) || Build.MODEL.contains(
         "google_sdk", true
-    ) || Build.MODEL.contains("Emulator", true) || Build.MODEL.contains(
+    ) || Build.MODEL.contains(
+            "sdk_g", true
+    )
+
+    || Build.MODEL.contains("Emulator", true) || Build.MODEL.contains(
         "Android SDK built for x86",
         true
     ) || Build.MANUFACTURER.contains(
@@ -140,6 +144,30 @@ fun storeSecureSharedPreferences(context: Context, key: String, value: String, f
     val editor = sharedPreferences.edit()
     editor.putString(key, value)
     editor.apply()
+}
+
+/**
+ * This function is used to recover data securely using Secure Shared Preferences.
+ * @param context
+ * @param key under which the value will be stored in the SharedPreferences.
+ * @param value the value that will be stored in the SharedPreferences under the specified key.
+ * @param fileName the name of the preferences file where the data will be stored.
+ * @return String the associated value with the valid key provided. If it does not exist returns null
+ * */
+fun getSecureSharedPreferences(context: Context, key: String, fileName: String): String? {
+    val masterKey = MasterKey.Builder(context)
+        .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+        .build()
+
+    val sharedPreferences = EncryptedSharedPreferences.create(
+        context,
+        fileName,
+        masterKey,
+        EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+    )
+
+    return sharedPreferences.getString(key, null)
 }
 
 /**
