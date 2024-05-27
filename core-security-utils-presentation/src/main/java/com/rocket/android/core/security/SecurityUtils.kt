@@ -14,6 +14,7 @@ import java.util.regex.Pattern
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
+import android.content.SharedPreferences
 
 /**
  * This function is used to check if an application is rooted.
@@ -126,7 +127,7 @@ fun preventScreenshots(activity: Activity) {
  * @param context
  * @param fileName the name of the preferences file where the data will be used in Secure Shared Preferences functions.
  */
-private fun secureSharedPreferencesInstance((context: Context, fileName: String): SharedPreferences {
+private fun secureSharedPreferencesInstance(context: Context, fileName: String): SharedPreferences {
     val masterKey = MasterKey.Builder(context)
         .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
         .build()
