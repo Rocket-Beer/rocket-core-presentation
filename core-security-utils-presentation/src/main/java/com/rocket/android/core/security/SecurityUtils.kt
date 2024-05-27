@@ -122,6 +122,25 @@ fun preventScreenshots(activity: Activity) {
 }
 
 /**
+ * This function is an instance used to be called in Secure Shared Preferences functions.
+ * @param context
+ * @param fileName the name of the preferences file where the data will be used in Secure Shared Preferences functions.
+ */
+private fun secureSharedPreferencesInstance((context: Context, fileName: String): SharedPreferences {
+    val masterKey = MasterKey.Builder(context)
+        .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+        .build()
+
+    return EncryptedSharedPreferences.create(
+        context,
+        fileName,
+        masterKey,
+        EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+    )
+}
+
+/**
  * This function is used to store data securely using Secure Shared Preferences.
  * @param context
  * @param key under which the value will be stored in the SharedPreferences.
@@ -129,45 +148,34 @@ fun preventScreenshots(activity: Activity) {
  * @param fileName the name of the preferences file where the data will be stored.
  * */
 fun storeSecureSharedPreferences(context: Context, key: String, value: String, fileName: String) {
-    val masterKey = MasterKey.Builder(context)
-        .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-        .build()
-
-    val sharedPreferences = EncryptedSharedPreferences.create(
-        context,
-        fileName,
-        masterKey,
-        EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-    )
-
+    val sharedPreferences = secureSharedPreferencesInstance(context, fileName)
     val editor = sharedPreferences.edit()
     editor.putString(key, value)
     editor.apply()
 }
 
 /**
- * This function is used to recover data securely using Secure Shared Preferences.
+ * This function is used to get data securely using Secure Shared Preferences.
  * @param context
- * @param key under which the value will be stored in the SharedPreferences.
- * @param value the value that will be stored in the SharedPreferences under the specified key.
- * @param fileName the name of the preferences file where the data will be stored.
- * @return String the associated value with the valid key provided. If it does not exist returns null
+ * @param key under which the value will be obtained in the SharedPreferences.
+ * @param fileName the name of the preferences file where the data will be obtained.
  * */
 fun getSecureSharedPreferences(context: Context, key: String, fileName: String): String? {
-    val masterKey = MasterKey.Builder(context)
-        .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-        .build()
-
-    val sharedPreferences = EncryptedSharedPreferences.create(
-        context,
-        fileName,
-        masterKey,
-        EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-    )
-
+    val sharedPreferences = secureSharedPreferencesInstance(context, fileName)
     return sharedPreferences.getString(key, null)
+}
+
+/**
+ * This function is used to delete data securely using Secure Shared Preferences.
+ * @param context
+ * @param key under which the value will be deleted in the SharedPreferences.
+ * @param fileName the name of the preferences file where the data will be deleted.
+ * */
+fun deleteSecureSharedPreferences(context: Context, key: String, fileName: String) {
+    val sharedPreferences = secureSharedPreferencesInstance(context, fileName)
+    val editor = sharedPreferences.edit()
+    editor.remove(key)
+    editor.apply()
 }
 
 /**
