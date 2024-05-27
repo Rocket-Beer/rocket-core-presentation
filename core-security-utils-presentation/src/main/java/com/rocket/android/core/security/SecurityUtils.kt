@@ -1,5 +1,6 @@
 import android.app.Activity
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import android.util.Log
@@ -14,7 +15,6 @@ import java.util.regex.Pattern
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
-import android.content.SharedPreferences
 
 /**
  * This function is used to check if an application is rooted.
@@ -95,7 +95,7 @@ fun checkXposed(context: Context): Boolean {
             return getXposedVersion.invoke(null) != null
         }
     } catch (ignored: Exception) {
-        //NOTHING TO DO HERE
+        // NOTHING TO DO HERE
     }
     return false
 }
@@ -186,10 +186,10 @@ fun deleteSecureSharedPreferences(context: Context, key: String, fileName: Strin
  * @param additionalPotentiallyDangerousApps list of dangerous origin.
  * @return Boolean true if is the origin is dangerous false if not.
  * */
-fun detectPotentiallyDangerousOrigin(context:Context, additionalPotentiallyDangerousApps: List<String> = emptyList()): Boolean {
+fun detectPotentiallyDangerousOrigin(context: Context, additionalPotentiallyDangerousApps: List<String> = emptyList()): Boolean {
     val packages = SecurityConstants.knownDangerousAppsPackages.toMutableList()
     packages.addAll(additionalPotentiallyDangerousApps)
-    return isAnyPackageFromListInstalled(context,packages)
+    return isAnyPackageFromListInstalled(context, packages)
 }
 
 /**
