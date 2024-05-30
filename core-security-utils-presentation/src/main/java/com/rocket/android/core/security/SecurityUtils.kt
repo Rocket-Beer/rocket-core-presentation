@@ -15,6 +15,8 @@ import java.util.regex.Pattern
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
+import javax.crypto.spec.IvParameterSpec
+import kotlin.random.Random
 
 /**
  * This function is used to check if an application is rooted.
@@ -38,26 +40,7 @@ fun isRoot(): Boolean {
  * @return Boolean true if is emulated false if not.
  */
 fun isEmulator(): Boolean {
-    return (Build.FINGERPRINT.startsWith("generic", true) || Build.FINGERPRINT.startsWith(
-        "unknown",
-        true
-    ) || Build.MODEL.contains(
-        "google_sdk", true
-    ) || Build.MODEL.contains(
-            "sdk_g", true
-    )
-
-    || Build.MODEL.contains("Emulator", true) || Build.MODEL.contains(
-        "Android SDK built for x86",
-        true
-    ) || Build.MANUFACTURER.contains(
-        "Genymotion", true
-    ) || Build.BRAND.startsWith("generic", true) && Build.DEVICE.startsWith(
-        "generic",
-        true
-    ) || "google_sdk" == Build.PRODUCT || (Build.HARDWARE == "goldfish" && Build.BOOTLOADER == "unknown") || (Build.BOOTLOADER == "unknown" && Build.BRAND.startsWith(
-        "generic", true
-    )) || (Build.DEVICE.startsWith("generic", true) && Build.PRODUCT == "sdk"))
+    return (Build.FINGERPRINT.startsWith("generic", true) || Build.FINGERPRINT.startsWith("unknown", true) || Build.MODEL.contains("google_sdk", true) || Build.MODEL.contains("sdk_g", true) || Build.MODEL.contains("Emulator", true) || Build.MODEL.contains("Android SDK built for x86", true) || Build.MANUFACTURER.contains("Genymotion", true) || Build.BRAND.startsWith("generic", true) && Build.DEVICE.startsWith("generic", true) || "google_sdk" == Build.PRODUCT || (Build.HARDWARE == "goldfish" && Build.BOOTLOADER == "unknown") || (Build.BOOTLOADER == "unknown" && Build.BRAND.startsWith("generic", true)) || (Build.DEVICE.startsWith("generic", true) && Build.PRODUCT == "sdk"))
 }
 
 /**
@@ -186,7 +169,10 @@ fun deleteSecureSharedPreferences(context: Context, key: String, fileName: Strin
  * @param additionalPotentiallyDangerousApps list of dangerous origin.
  * @return Boolean true if is the origin is dangerous false if not.
  * */
-fun detectPotentiallyDangerousOrigin(context: Context, additionalPotentiallyDangerousApps: List<String> = emptyList()): Boolean {
+fun detectPotentiallyDangerousOrigin(
+    context: Context,
+    additionalPotentiallyDangerousApps: List<String> = emptyList()
+): Boolean {
     val packages = SecurityConstants.knownDangerousAppsPackages.toMutableList()
     packages.addAll(additionalPotentiallyDangerousApps)
     return isAnyPackageFromListInstalled(context, packages)
@@ -202,10 +188,17 @@ fun detectPotentiallyDangerousOrigin(context: Context, additionalPotentiallyDang
 fun cryptData(
     data: ByteArray,
     transformation: String,
+    secretKey: SecretKey,
+    iv: ByteArray? = null,
     mode: Int = Cipher.ENCRYPT_MODE
 ): ByteArray {
     val cipher = Cipher.getInstance(transformation)
-    cipher.init(mode, generateSecretKey())
+    if (transformation.contains("ECB")) {
+        cipher.init(mode, secretKey)
+    } else {
+        val ivSpec = IvParameterSpec(iv ?: generateIV(cipher.blockSize))
+        cipher.init(mode, secretKey, ivSpec)
+    }
     return cipher.doFinal(data)
 }
 
@@ -217,12 +210,21 @@ fun generateHash(data: ByteArray): ByteArray {
     val digest = MessageDigest.getInstance("SHA-256")
     return digest.digest(data)
 }
+/**
+ * Generates an initialization vector (IV) for cryptographic operations.
+ * @return ByteArray of the generated IV.
+ */
+fun generateIV(ivSize: Int = 16): ByteArray {
+    val iv = ByteArray(ivSize)
+    Random.nextBytes(iv)
+    return iv
+}
 
 /**
  * This function is used to generate a secret key, which can be used for data encryption and decryption.
  *  @return SecretKey the generated key that can be used for encryption and decryption operations.
  */
-private fun generateSecretKey(): SecretKey {
+fun generateSecretKey(): SecretKey {
     val keyGenerator = KeyGenerator.getInstance("AES")
     keyGenerator.init(256)
     return keyGenerator.generateKey()
